@@ -1,6 +1,6 @@
 ﻿namespace AICore
 {
-	public enum AITypes
+	public enum AIType
 	{
 		target,
 		assassin,

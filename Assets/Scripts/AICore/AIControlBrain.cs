@@ -16,9 +16,10 @@ namespace AICore
 		private CharacterController characterController;
 
 		// Editor variables
+		[SerializeField] public AIType type { get; private set; }
 		[SerializeField] private float maxMovementSpeed = 3f;
 		[Tooltip("Maximum rotation angle per unit of time in radians")]
-		[SerializeField] private float maxRotationSpeed = 0.1f;
+		[SerializeField] private float maxRotationSpeed = 0.5f;
 
 		// Public variables
 		[HideInInspector] private float _speedMultiplier;
@@ -43,20 +44,36 @@ namespace AICore
 		//--------------------------
 		void Awake()
 		{
+			perceptionBrain = GetComponent<AIPerceptionBrain>();
 			characterController = GetComponent<CharacterController>();
 
-			speedMultiplier = 1;
-			targetDirection = transform.rotation.eulerAngles;
+			speedMultiplier = 0;
+			targetDirection = Vector3.zero;
 		}
 
 		void Update()
 		{
+			// slow down or accelerate
+			// NIY
+
 			// rotate towards targetRotation
 			Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, maxRotationSpeed * Time.deltaTime, 0.0f);
 			transform.rotation = Quaternion.LookRotation(newDirection);
 
 			// moving
-			characterController.SimpleMove(Vector3.zero * speedMultiplier);
+			characterController.SimpleMove(transform.forward * maxMovementSpeed * speedMultiplier);
+		}
+
+		private void OnDrawGizmos()
+		{
+			if (Application.isPlaying)
+			{
+				foreach (AIEntity entity in perceptionBrain.GetVisibleAIEntities())
+				{
+					Gizmos.color = Color.white;
+					Gizmos.DrawLine(transform.position, entity.transform.position);
+				}
+			}
 		}
 
 		//--------------------------

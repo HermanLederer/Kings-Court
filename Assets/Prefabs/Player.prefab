@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2571310909559162275}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -100,6 +100,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI Entity Target
       objectReference: {fileID: 0}
+    - target: {fileID: 2782972717202752895, guid: 5c58d4ca6cf6fc74d94104dfe12b9693,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c58d4ca6cf6fc74d94104dfe12b9693, type: 3}
 --- !u!4 &3990352333867695528 stripped
@@ -175,6 +180,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI Entity Assassin
       objectReference: {fileID: 0}
+    - target: {fileID: 2782972717202752895, guid: 14e4ede923e91614abfc7c870c241433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14e4ede923e91614abfc7c870c241433, type: 3}
 --- !u!4 &7263801022855296537 stripped
@@ -249,6 +259,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AI Entity Stunner
+      objectReference: {fileID: 0}
+    - target: {fileID: 2782972717202752895, guid: 3d4b492d1b662f84e81392d83733747f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d4b492d1b662f84e81392d83733747f, type: 3}
