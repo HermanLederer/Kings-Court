@@ -37,6 +37,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3246033807133791763, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2fa7952b5a78e524fb65ecea5f8b6181, type: 2}
+    - target: {fileID: 3246033807133791774, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3246033807133791775, guid: efda16d68f0456c4499277b91b457972,
         type: 3}
       propertyPath: radiusOfView
