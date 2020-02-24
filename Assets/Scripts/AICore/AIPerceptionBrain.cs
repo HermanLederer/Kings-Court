@@ -17,18 +17,6 @@ namespace AICore
 		[SerializeField] private float radiusOfView = 3f;
 		[SerializeField] private LayerMask playerLayerMask;
 
-		// Public variables
-
-		// Private variables
-
-		//--------------------------
-		// MonoBehaviour methods
-		//--------------------------
-		void Awake()
-		{
-
-		}
-
 		//--------------------------
 		// AIPerceptionBrain methods
 		//--------------------------

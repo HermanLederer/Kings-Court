@@ -25,7 +25,7 @@ namespace AICore
 		// Private variables
 		[SerializeField] private int maxHealth = 3;
 		public int currentHealth { get; private set; }
-		private float stun;
+		public float stun { get; private set; }
 
 		//--------------------------
 		// MonoBehaviour methods
@@ -83,13 +83,13 @@ namespace AICore
 			// not receiving damage if not target
 			if (type != AIType.target) return;
 
-			currentHealth--;
-			Debug.Log(transform.name + " was hit");
+			//currentHealth--;
+			//Debug.Log(transform.name + " was hit");
 
-			if (currentHealth <= 0)
-			{
+			//if (currentHealth <= 0)
+			//{
 				Die();
-			}
+			//}
 		}
 
 		public virtual void Die()

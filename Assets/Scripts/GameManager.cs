@@ -23,18 +23,22 @@ public class GameManager : MonoBehaviour
 	//--------------------------
 	public void Register(AICore.AITeam team)
 	{
-		teams.Add(team);
+		if (!teams.Contains(team)) teams.Add(team);
 	}
 
 	public void Eliminate(AICore.AITeam team)
 	{
-		teams.Remove(team);
-		if (teams.Count <= 1) DecalreWinnder(teams[0]);
+		if (teams.Contains(team))
+		{
+			teams.Remove(team);
+			if (teams.Count == 0) DecalreWinnder(teams[0]);
+			//Debug.Log("" + teams.Count);}
+		}
 	}
 
 	public void DecalreWinnder(AICore.AITeam team)
 	{
 		Debug.Log("Team " + team + " won!");
-		Time.timeScale = 0f;
+		//Time.timeScale = 0f;
 	}
 }

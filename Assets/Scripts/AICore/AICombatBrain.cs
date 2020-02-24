@@ -10,44 +10,36 @@ namespace AICore
 		[SerializeField] private LayerMask playerLayerMask;
 
 		private AIBrainInterface brainInterface;
+		private float radius = 2f;
 
 		//--------------------------
 		// MonoBehaviour methods
 		//--------------------------
 		private void Awake()
 		{
-			brainInterface =  GetComponent<AIBrainInterface>();
+			brainInterface = GetComponent<AIBrainInterface>();
 		}
 
 		private void Update()
 		{
-			// Debugging for damage
-			if (Input.GetKeyDown(KeyCode.T))
+			if (brainInterface.stun < Time.time)
 			{
-				brainInterface.TakeDamage();
-			}
-
-			switch (brainInterface.type)
-			{
-				case AIType.target:
-					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
-					{
-						entityInterface.Stun(7f); //target can stun for testing purposes
-					}
-					break;
-				case AIType.assassin:
-					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
-					{
-						entityInterface.TakeDamage();
-					}
-					break;
-				case AIType.stunner:
-					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
-					{
-						entityInterface.Stun(5f);
-						brainInterface.Stun(7f);
-					}
-					break;
+				switch (brainInterface.type)
+				{
+					case AIType.assassin:
+						foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(radius))
+						{
+							entityInterface.TakeDamage();
+						}
+						break;
+					case AIType.stunner:
+						foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(radius))
+						{
+							entityInterface.Stun(5f);
+							brainInterface.Stun(7f);
+						}
+						break;
+				}
 			}
 		}
 
