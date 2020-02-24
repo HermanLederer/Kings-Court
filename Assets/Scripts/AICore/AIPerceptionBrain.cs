@@ -32,9 +32,9 @@ namespace AICore
 		//--------------------------
 		// AIPerceptionBrain methods
 		//--------------------------
-		public List<AIEntity> GetVisibleAIEntities()
+		public List<AIBrainInterface> GetVisibleAIEntities()
 		{
-			List<AIEntity> visibleEntities = new List<AIEntity>();
+			List<AIBrainInterface> visibleEntities = new List<AIBrainInterface>();
 
 			// geting all AI entities
 			Collider[] collidersInRadius = Physics.OverlapSphere(transform.position, radiusOfView, playerLayerMask);
@@ -62,7 +62,7 @@ namespace AICore
 				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
 
 				// adding to visibleEntites list
-				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIBrainInterface>().type, collider.gameObject.GetComponent<AIBrainInterface>().team));
+				visibleEntities.Add(collider.gameObject.GetComponent<AIBrainInterface>());
 			}
 
 			return visibleEntities;

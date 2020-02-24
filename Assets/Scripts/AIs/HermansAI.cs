@@ -42,21 +42,21 @@ public class HermansAI : PlayerAI
 		}
 
 		// target
-		foreach (AICore.AIEntity visibleEntity in target.GetVisibleAIEntities())
+		foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
 		{
-			if (visibleEntity.team != target.team) target.SetDestination(-visibleEntity.transform.position);
+			if (visibleEntityInterface.team != target.team) target.SetDestination(-visibleEntityInterface.transform.position);
 		}
 
 		// assassin
-		foreach (AICore.AIEntity visibleEntity in assassin.GetVisibleAIEntities())
+		foreach (AICore.AIBrainInterface visibleEntityInterface in assassin.GetVisibleAIEntities())
 		{
-			if (visibleEntity.team != target.team && visibleEntity.type == AICore.AIType.target) assassin.SetDestination(visibleEntity.transform.position);
+			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target) assassin.SetDestination(visibleEntityInterface.transform.position);
 		}
 
 		// stunner
-		foreach (AICore.AIEntity visibleEntity in stunner.GetVisibleAIEntities())
+		foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
 		{
-			if (visibleEntity.team != target.team && visibleEntity.type != AICore.AIType.stunner) stunner.SetDestination(visibleEntity.transform.position);
+			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type != AICore.AIType.stunner) stunner.SetDestination(visibleEntityInterface.transform.position);
 		}
 	}
 

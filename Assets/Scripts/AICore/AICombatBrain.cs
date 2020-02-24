@@ -29,38 +29,23 @@ namespace AICore
 
 			switch (brainInterface.type)
 			{
-				case AIType.target: // target checks
-					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
+				case AIType.target:
+					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
 					{
-						switch (entity.type)
-						{
-							case AIType.assassin:
-								brainInterface.TakeDamage();
-								break;
-							case AIType.stunner:
-								brainInterface.Stun(4f); // getting stunned by stunner
-								break;
-						}
+						entityInterface.Stun(7f); //target can stun for testing purposes
 					}
 					break;
-				case AIType.assassin: // assassin checks
-					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
+				case AIType.assassin:
+					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
 					{
-						switch (entity.type)
-						{
-							case AIType.target:
-								brainInterface.Stun(5f); // stunning themselves on target collision (for testing)
-								break;
-							case AIType.stunner:
-								brainInterface.Stun(7f); // getting stunned by stunner
-								break;
-						}
+						entityInterface.TakeDamage();
 					}
 					break;
-				case AIType.stunner: // stunner checks
-					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
+				case AIType.stunner:
+					foreach (AIBrainInterface entityInterface in GetEnemiesInRadius(1.5f))
 					{
-						brainInterface.Stun(5f); // stunning themselves
+						entityInterface.Stun(5f);
+						brainInterface.Stun(7f);
 					}
 					break;
 			}
@@ -69,9 +54,9 @@ namespace AICore
 		//--------------------------
 		// AICombat methods
 		//--------------------------
-		public List<AIEntity> GetEnemiesInRadius(float radius)
+		public List<AIBrainInterface> GetEnemiesInRadius(float radius)
 		{
-			List<AIEntity> visibleEntities = new List<AIEntity>();
+			List<AIBrainInterface> visibleEntities = new List<AIBrainInterface>();
 
 			// geting all AI entities in radus
 			Collider[] collidersInRadius = Physics.OverlapSphere(transform.position, radius, playerLayerMask);
@@ -90,7 +75,7 @@ namespace AICore
 				if (collider.gameObject.GetComponent<AIBrainInterface>().team == brainInterface.team) continue;
 
 				// adding to visibleEntites list
-				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIBrainInterface>().type, collider.gameObject.GetComponent<AIBrainInterface>().team));
+				visibleEntities.Add(collider.gameObject.GetComponent<AIBrainInterface>());
 			}
 
 			return visibleEntities;

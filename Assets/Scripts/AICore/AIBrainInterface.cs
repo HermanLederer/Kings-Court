@@ -51,10 +51,10 @@ namespace AICore
 		{
 			if (Application.isPlaying)
 			{
-				foreach (AIEntity entity in perceptionBrain.GetVisibleAIEntities())
+				foreach (AIBrainInterface entityInterface in perceptionBrain.GetVisibleAIEntities())
 				{
 					Gizmos.color = Color.white;
-					Gizmos.DrawLine(transform.position, entity.transform.position);
+					Gizmos.DrawLine(transform.position, entityInterface.transform.position);
 				}
 			}
 		}
@@ -73,13 +73,16 @@ namespace AICore
 			if (Time.time > stun) navMeshAgent.SetDestination(target);
 		}
 
-		public List<AIEntity> GetVisibleAIEntities()
+		public List<AIBrainInterface> GetVisibleAIEntities()
 		{
 			return perceptionBrain.GetVisibleAIEntities();
 		}
 
 		public void TakeDamage()
 		{
+			// not receiving damage if not target
+			if (type != AIType.target) return;
+
 			currentHealth--;
 			Debug.Log(transform.name + " was hit");
 
