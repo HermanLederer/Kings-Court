@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerAI : MonoBehaviour
 {
 	// Editor variables
-	[SerializeField] protected AICore.AIControlBrain target;
-	[SerializeField] protected AICore.AIControlBrain assassin;
-	[SerializeField] protected AICore.AIControlBrain stunner;
+	[SerializeField] protected AICore.AIBrainInterface target;
+	[SerializeField] protected AICore.AIBrainInterface assassin;
+	[SerializeField] protected AICore.AIBrainInterface stunner;
 }

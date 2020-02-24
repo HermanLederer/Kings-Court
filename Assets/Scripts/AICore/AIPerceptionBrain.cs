@@ -56,26 +56,13 @@ namespace AICore
 				if (hit.collider != collider) continue;
 
 				// does not contain AIControlBrain check
-				if (collider.gameObject.GetComponent<AIControlBrain>() == null) continue;
+				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
 
 				// adding to visibleEntites list
-				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIControlBrain>().type));
+				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIBrainInterface>().type, collider.gameObject.GetComponent<AIBrainInterface>().team));
 			}
 
 			return visibleEntities;
-		}
-	}
-
-	// Class for passing visible AI objects to PlayerAI
-	public class AIEntity
-	{
-		public Transform transform { get; private set; }
-		public AIType type { get; private set; }
-
-		public AIEntity(Transform transform, AIType type)
-		{
-			this.transform = transform;
-			this.type = type;
 		}
 	}
 }
