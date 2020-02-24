@@ -42,6 +42,9 @@ namespace AICore
 			// filtering out entities out of radiusOfView and behind obstacles
 			foreach (Collider collider in collidersInRadius)
 			{
+				// self check
+				if (collider.gameObject == gameObject) continue;
+
 				Vector3 entityPosition = collider.transform.position;
 
 				float distanceToEntity = Vector3.Distance(transform.position, entityPosition);

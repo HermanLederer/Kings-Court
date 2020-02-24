@@ -30,7 +30,7 @@ namespace AICore
 			switch (brainInterface.type)
 			{
 				case AIType.target: // target checks
-					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
 					{
 						switch (entity.type)
 						{
@@ -44,7 +44,7 @@ namespace AICore
 					}
 					break;
 				case AIType.assassin: // assassin checks
-					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
 					{
 						switch (entity.type)
 						{
@@ -58,7 +58,7 @@ namespace AICore
 					}
 					break;
 				case AIType.stunner: // stunner checks
-					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					foreach (AIEntity entity in GetEnemiesInRadius(1.5f))
 					{
 						brainInterface.Stun(5f); // stunning themselves
 					}
@@ -69,7 +69,7 @@ namespace AICore
 		//--------------------------
 		// AICombat methods
 		//--------------------------
-		public List<AIEntity> GetAIEntitiesInRadius(float radius)
+		public List<AIEntity> GetEnemiesInRadius(float radius)
 		{
 			List<AIEntity> visibleEntities = new List<AIEntity>();
 
@@ -80,7 +80,14 @@ namespace AICore
 			foreach (Collider collider in collidersInRadius)
 			{
 				// self check
-				if (collider.gameObject == gameObject) continue;
+				//if (collider.gameObject == gameObject) continue;
+				// no need since there is a teammate check and you are your own teammate
+
+				// does not contain AIControlBrain check
+				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
+
+				// teammate check
+				if (collider.gameObject.GetComponent<AIBrainInterface>().team == brainInterface.team) continue;
 
 				// adding to visibleEntites list
 				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIBrainInterface>().type, collider.gameObject.GetComponent<AIBrainInterface>().team));

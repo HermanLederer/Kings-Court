@@ -19,14 +19,13 @@ namespace AICore
 		private NavMeshAgent navMeshAgent;
 
 		// Editor variables
-		[SerializeField] public GameTeam team;
+		[SerializeField] public AITeam team;
 		[SerializeField] public AIType type;
 
 		// Private variables
 		[SerializeField] private int maxHealth = 3;
 		public int currentHealth { get; private set; }
 		private float stun;
-		private bool isDead;
 
 		//--------------------------
 		// MonoBehaviour methods
@@ -39,7 +38,6 @@ namespace AICore
 			navMeshAgent = GetComponent<NavMeshAgent>();
 
 			stun = 0;
-			isDead = false;
 		}
 
 		private void Start()
@@ -72,7 +70,7 @@ namespace AICore
 
 		public void SetDestination(Vector3 target)
 		{
-			if (Time.time > stun && !isDead) navMeshAgent.SetDestination(target);
+			if (Time.time > stun) navMeshAgent.SetDestination(target);
 		}
 
 		public List<AIEntity> GetVisibleAIEntities()
@@ -94,11 +92,8 @@ namespace AICore
 		public virtual void Die()
 		{
 			Debug.Log(transform.name + " died");
-			isDead = true;
 			GameManager.instance.Eliminate(team);
-			GetComponent<MeshRenderer>().enabled = false;
-			GetComponent<CapsuleCollider>().enabled = false;
-			GetComponent<NavMeshAgent>().enabled = false;
+			Destroy(transform.parent.gameObject);
 		}
 
 	}

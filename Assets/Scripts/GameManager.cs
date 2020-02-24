@@ -16,32 +16,25 @@ public class GameManager : MonoBehaviour
 	// 1 - Amar
 	// 2 - Herman
 	// 3 - Ray
-	[SerializeField] private List<GameTeam> teams;
+	[SerializeField] private List<AICore.AITeam> teams;
 
 	//--------------------------
 	// AICombat methods
 	//--------------------------
-	public void Register(GameTeam team)
+	public void Register(AICore.AITeam team)
 	{
 		teams.Add(team);
 	}
 
-	public void Eliminate(GameTeam team)
+	public void Eliminate(AICore.AITeam team)
 	{
 		teams.Remove(team);
 		if (teams.Count <= 1) DecalreWinnder(teams[0]);
 	}
 
-	public void DecalreWinnder(GameTeam team)
+	public void DecalreWinnder(AICore.AITeam team)
 	{
 		Debug.Log("Team " + team + " won!");
-		Time.timeScale = 0;
+		Time.timeScale = 0f;
 	}
-}
-
-public enum GameTeam
-{
-	Amar,
-	Herman,
-	Ray
 }
