@@ -10,6 +10,6 @@ public class PlayerAI : MonoBehaviour
 {
 	// Editor variables
 	[SerializeField] protected AICore.AIControlBrain target;
-	[SerializeField] protected AICore.AIControlBrain assasin;
+	[SerializeField] protected AICore.AIControlBrain assassin;
 	[SerializeField] protected AICore.AIControlBrain stunner;
 }

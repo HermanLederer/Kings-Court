@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1760221329346182349}
-  assasin: {fileID: 5459259111789279100}
+  assassin: {fileID: 5459259111789279100}
   stunner: {fileID: 7414084593950745749}
 --- !u!1001 &3390396568773001577
 PrefabInstance:

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1760221329346182349}
-  assasin: {fileID: 5459259111789279100}
+  assassin: {fileID: 5459259111789279100}
   stunner: {fileID: 7414084593950745749}
 --- !u!1001 &3390396568773001577
 PrefabInstance:
@@ -26,6 +26,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player (Herman)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571310909559162274, guid: 67cd34447881ef04a96f55686b55aa41,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 2571310909559162275, guid: 67cd34447881ef04a96f55686b55aa41,
         type: 3}
@@ -46,6 +51,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5325793666190173683, guid: 67cd34447881ef04a96f55686b55aa41,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 67cd34447881ef04a96f55686b55aa41, type: 3}

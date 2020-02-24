@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AI Entity Target
       objectReference: {fileID: 0}
+    - target: {fileID: 3246033807133791761, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 3246033807133791762, guid: efda16d68f0456c4499277b91b457972,
         type: 3}
       propertyPath: m_RootOrder
@@ -31,6 +36,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151186207547214677, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: attackSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6777186672013032671, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_StoppingDistance
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: efda16d68f0456c4499277b91b457972, type: 3}
