@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 1
   type: 0
+  maxHealth: 3
 --- !u!114 &3246033807133791775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,9 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d6d0fe70092594da8ce2ec8115fedd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
   attackSpeed: 1
-  attackDelay: 0.6
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!23 &3246033807133791763
 MeshRenderer:
   m_ObjectHideFlags: 0

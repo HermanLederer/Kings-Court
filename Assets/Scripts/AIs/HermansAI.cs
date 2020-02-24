@@ -34,8 +34,8 @@ public class HermansAI : PlayerAI
 		{
 			foreach (AICore.AIBrainInterface member in team)
 			{
-				member.SetDestination(member.transform.position + Vector3.one * Random.Range(-5f, 5f));
-				//member.SetDestination(member.transform.position * -1);
+				//member.SetDestination(member.transform.position + Vector3.one * Random.Range(-5f, 5f));
+				member.SetDestination(member.transform.position * -1);
 			}
 
 			nextRandomMoveTime = Time.time + 0.5f;

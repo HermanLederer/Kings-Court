@@ -6,66 +6,87 @@ namespace AICore
 {
 	public class AICombatBrain : MonoBehaviour
 	{
-		[SerializeField] private int maxHealth = 3;
-		public int currentHealth { get; private set; }
-
 		public float attackSpeed = 1f;
-		private float attackCD = 0f;
-		public float attackDelay = 0.6f;
+		[SerializeField] private LayerMask playerLayerMask;
+
+		private AIBrainInterface brainInterface;
 
 		//--------------------------
 		// MonoBehaviour methods
 		//--------------------------
-		void Start()
+		private void Awake()
 		{
-			currentHealth = maxHealth;
+			brainInterface =  GetComponent<AIBrainInterface>();
 		}
 
 		private void Update()
 		{
-			attackCD -= Time.deltaTime;
-
 			// Debugging for damage
 			if (Input.GetKeyDown(KeyCode.T))
 			{
-				TakeDamage(1);
+				brainInterface.TakeDamage();
+			}
+
+			switch (brainInterface.type)
+			{
+				case AIType.target: // target checks
+					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					{
+						switch (entity.type)
+						{
+							case AIType.assassin:
+								brainInterface.TakeDamage();
+								break;
+							case AIType.stunner:
+								brainInterface.Stun(4f); // getting stunned by stunner
+								break;
+						}
+					}
+					break;
+				case AIType.assassin: // assassin checks
+					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					{
+						switch (entity.type)
+						{
+							case AIType.target:
+								brainInterface.Stun(5f); // stunning themselves on target collision (for testing)
+								break;
+							case AIType.stunner:
+								brainInterface.Stun(7f); // getting stunned by stunner
+								break;
+						}
+					}
+					break;
+				case AIType.stunner: // stunner checks
+					foreach (AIEntity entity in GetAIEntitiesInRadius(1f))
+					{
+						brainInterface.Stun(5f); // stunning themselves
+					}
+					break;
 			}
 		}
 
 		//--------------------------
 		// AICombat methods
 		//--------------------------
-		public void Attack()
+		public List<AIEntity> GetAIEntitiesInRadius(float radius)
 		{
-			if (attackCD <= 0f)
+			List<AIEntity> visibleEntities = new List<AIEntity>();
+
+			// geting all AI entities in radus
+			Collider[] collidersInRadius = Physics.OverlapSphere(transform.position, radius, playerLayerMask);
+
+			// converting colliders to AIEntities
+			foreach (Collider collider in collidersInRadius)
 			{
-				StartCoroutine(DoDamage(attackDelay));
+				// self check
+				if (collider.gameObject == gameObject) continue;
 
-				attackCD = 1f / attackSpeed;
+				// adding to visibleEntites list
+				visibleEntities.Add(new AIEntity(collider.transform, collider.gameObject.GetComponent<AIBrainInterface>().type, collider.gameObject.GetComponent<AIBrainInterface>().team));
 			}
-		}
 
-		IEnumerator DoDamage(float delay)
-		{
-			yield return new WaitForSeconds(delay);
-			TakeDamage(1);
-		}
-
-		public void TakeDamage(int damage)
-		{
-			currentHealth -= damage;
-			Debug.Log(transform.name + " was hit");
-
-			if (currentHealth <= 0)
-			{
-				Die();
-			}
-		}
-
-		public virtual void Die()
-		{
-			Debug.Log(transform.name + " died");
-			Destroy(gameObject);
+			return visibleEntities;
 		}
 	}
 }
