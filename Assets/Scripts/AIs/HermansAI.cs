@@ -20,7 +20,7 @@ public class HermansAI : PlayerAI
 		nextRandomMoveTime = Time.time;
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (nextRandomMoveTime <= Time.time)
 		{

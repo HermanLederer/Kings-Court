@@ -55,12 +55,11 @@ namespace AICore
 			// converting colliders to AIEntities
 			foreach (Collider collider in collidersInRadius)
 			{
-				// self check
-				//if (collider.gameObject == gameObject) continue;
-				// no need since there is a teammate check and you are your own teammate
-
 				// does not contain AIControlBrain check
 				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
+
+				// is eliminated check
+				if (collider.transform.parent.GetComponent<PlayerAI>().isEliminated) continue;
 
 				// teammate check
 				if (collider.gameObject.GetComponent<AIBrainInterface>().team == brainInterface.team) continue;

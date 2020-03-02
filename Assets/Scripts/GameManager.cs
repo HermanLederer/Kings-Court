@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (teams.Contains(team))
 		{
+			Debug.Log("Team " + team + " eliminated");
 			teams.Remove(team);
 			if (teams.Count == 1) DecalreWinnder(teams[0]);
 		}
@@ -42,6 +43,6 @@ public class GameManager : MonoBehaviour
 	public void DecalreWinnder(AICore.AITeam team)
 	{
 		Debug.Log("Team " + team + " won!");
-		Time.timeScale = 0f;
+		//Time.timeScale = 0f;
 	}
 }

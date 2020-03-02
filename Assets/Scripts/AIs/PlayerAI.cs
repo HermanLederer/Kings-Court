@@ -14,7 +14,6 @@ public class PlayerAI : MonoBehaviour
 	protected AICore.AIBrainInterface stunner;
 
 	// Editor variables
-	[Header("Team")]
 	[SerializeField] protected AICore.AITeam team;
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject targetPrefab;
@@ -22,7 +21,11 @@ public class PlayerAI : MonoBehaviour
 	[SerializeField] protected GameObject stunnerPrefab;
 
 	// Private variables
+	private Vector3 spawnPosition;
 	protected AICore.AIBrainInterface[] members;
+
+	// Public
+	public bool isEliminated { get; protected set; }
 
 	protected void Awake()
 	{
@@ -36,6 +39,9 @@ public class PlayerAI : MonoBehaviour
 		assassin.team = team;
 		stunner.team = team;
 
+		isEliminated = false;
+		spawnPosition = transform.position;
+
 		// creating a members array for ease of use
 		members = new AICore.AIBrainInterface[3];
 		members[0] = target;
@@ -47,5 +53,15 @@ public class PlayerAI : MonoBehaviour
 	{
 		// registering the team in game manager
 		GameManager.instance.Register(team);
+	}
+
+	public void Eliminate()
+	{
+		GameManager.instance.Eliminate(team);
+		isEliminated = true;
+
+		target.Burn();
+		assassin.Burn();
+		stunner.Burn();
 	}
 }

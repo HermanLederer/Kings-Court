@@ -55,40 +55,55 @@ namespace AICore
 		//--------------------------
 		public void Stun(float time)
 		{
+			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return;
 			SetDestination(transform.position);
 			stun = Time.time + time;
 		}
 
 		public void SetDestination(Vector3 target)
 		{
+			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return;
 			if (Time.time > stun) navMeshAgent.SetDestination(target);
 		}
 
 		public List<AIBrainInterface> GetVisibleAIEntities()
 		{
+			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return new List<AIBrainInterface>();
 			return perceptionBrain.GetVisibleAIEntities();
 		}
 
 		public void TakeDamage()
 		{
+			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return;
+
 			// not receiving damage if not target
 			if (type != AIType.target) return;
 
-			//currentHealth--;
-			//Debug.Log(transform.name + " was hit");
-
-			//if (currentHealth <= 0)
-			//{
-				Die();
-			//}
+			Die();
 		}
 
-		public virtual void Die()
+		public void Die()
 		{
-			Debug.Log(transform.name + " died");
-			GameManager.instance.Eliminate(team);
-			Destroy(transform.parent.gameObject);
+			transform.parent.gameObject.GetComponent<PlayerAI>().Eliminate();
 		}
 
+		public void Burn()
+		{
+			StartCoroutine(BurnCorutine());
+		}
+
+		private IEnumerator BurnCorutine()
+		{
+			GetComponent<AIPerceptionBrain>().enabled = false;
+			GetComponent<AICombatBrain>().enabled = false;
+			GetComponent<Collider>().enabled = false;
+			GetComponent<NavMeshAgent>().enabled = false;
+
+			while (true)
+			{
+				transform.position += Vector3.down * Time.deltaTime * 2f;
+				yield return null;
+			}
+		}
 	}
 }
