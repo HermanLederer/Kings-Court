@@ -23,8 +23,6 @@ namespace AICore
 		[SerializeField] public AIType type;
 
 		// Private variables
-		[SerializeField] private int maxHealth = 3;
-		public int currentHealth { get; private set; }
 		public float stun { get; private set; }
 
 		//--------------------------
@@ -42,8 +40,6 @@ namespace AICore
 
 		private void Start()
 		{
-			currentHealth = maxHealth;
-
 			GameManager.instance.Register(team); // registering the team in game manager
 		}
 

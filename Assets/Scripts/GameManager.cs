@@ -31,14 +31,13 @@ public class GameManager : MonoBehaviour
 		if (teams.Contains(team))
 		{
 			teams.Remove(team);
-			if (teams.Count == 0) DecalreWinnder(teams[0]);
-			//Debug.Log("" + teams.Count);}
+			if (teams.Count == 1) DecalreWinnder(teams[0]);
 		}
 	}
 
 	public void DecalreWinnder(AICore.AITeam team)
 	{
 		Debug.Log("Team " + team + " won!");
-		//Time.timeScale = 0f;
+		Time.timeScale = 0f;
 	}
 }
