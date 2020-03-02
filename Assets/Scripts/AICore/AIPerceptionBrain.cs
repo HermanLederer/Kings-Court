@@ -49,6 +49,9 @@ namespace AICore
 				// does not contain AIControlBrain check
 				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
 
+				// is eliminated check
+				//if (collider.transform.parent.GetComponent<PlayerAI>().isEliminated) continue;
+
 				// adding to visibleEntites list
 				visibleEntities.Add(collider.gameObject.GetComponent<AIBrainInterface>());
 			}

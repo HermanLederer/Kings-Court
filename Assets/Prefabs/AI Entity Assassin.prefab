@@ -52,6 +52,26 @@ PrefabInstance:
       propertyPath: radiusOfView
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_StoppingDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_AngularSpeed
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_Speed
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6777186672013032671, guid: efda16d68f0456c4499277b91b457972,
         type: 3}
       propertyPath: m_StoppingDistance

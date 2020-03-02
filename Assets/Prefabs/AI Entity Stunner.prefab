@@ -52,6 +52,16 @@ PrefabInstance:
       propertyPath: attackSpeed
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_Speed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6131219049793826564, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_Acceleration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6777186672013032671, guid: efda16d68f0456c4499277b91b457972,
         type: 3}
       propertyPath: m_StoppingDistance

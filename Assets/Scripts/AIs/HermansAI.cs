@@ -9,30 +9,22 @@ public class HermansAI : PlayerAI
 	// Public variables
 
 	// Private variables
-	private AICore.AIBrainInterface[] team;
 	private float nextRandomMoveTime;
 
 	//--------------------------
 	// MonoBehaviour methods
 	//--------------------------
-	void Awake()
+	new void Start()
 	{
-		team = new AICore.AIBrainInterface[3];
-		team[0] = target;
-		team[1] = assassin;
-		team[2] = stunner;
-	}
-
-	void Start()
-	{
+		base.Start();
 		nextRandomMoveTime = Time.time;
 	}
 
-	void Update()
+	private void Update()
 	{
 		if (nextRandomMoveTime <= Time.time)
 		{
-			foreach (AICore.AIBrainInterface member in team)
+			foreach (AICore.AIBrainInterface member in members)
 			{
 				//member.SetDestination(member.transform.position + Vector3.one * Random.Range(-5f, 5f));
 				member.SetDestination(member.transform.position * -1);

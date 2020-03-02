@@ -6,11 +6,10 @@ namespace AICore
 {
 	public class AICombatBrain : MonoBehaviour
 	{
-		public float attackSpeed = 1f;
 		[SerializeField] private LayerMask playerLayerMask;
 
 		private AIBrainInterface brainInterface;
-		private float radius = 2f;
+		private readonly float radius = 1.5f;
 
 		//--------------------------
 		// MonoBehaviour methods
@@ -56,12 +55,11 @@ namespace AICore
 			// converting colliders to AIEntities
 			foreach (Collider collider in collidersInRadius)
 			{
-				// self check
-				//if (collider.gameObject == gameObject) continue;
-				// no need since there is a teammate check and you are your own teammate
-
 				// does not contain AIControlBrain check
 				if (collider.gameObject.GetComponent<AIBrainInterface>() == null) continue;
+
+				// is eliminated check
+				if (collider.transform.parent.GetComponent<PlayerAI>().isEliminated) continue;
 
 				// teammate check
 				if (collider.gameObject.GetComponent<AIBrainInterface>().team == brainInterface.team) continue;

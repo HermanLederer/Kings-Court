@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8002545447612883657}
   - component: {fileID: 3386143801577877945}
   - component: {fileID: 5359873722405363631}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Left Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3246033807133791772}
   - component: {fileID: 3451704127864782607}
   - component: {fileID: 6131219049793826564}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AI Entity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 1
   type: 0
-  maxHealth: 3
 --- !u!114 &3246033807133791775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d6d0fe70092594da8ce2ec8115fedd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSpeed: 1
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -260,7 +258,7 @@ GameObject:
   - component: {fileID: 2058708221644411712}
   - component: {fileID: 7578290084440552427}
   - component: {fileID: 3129690498310971987}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Right Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
