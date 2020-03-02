@@ -38,11 +38,6 @@ namespace AICore
 			stun = 0;
 		}
 
-		private void Start()
-		{
-			GameManager.instance.Register(team); // registering the team in game manager
-		}
-
 		private void OnDrawGizmos()
 		{
 			if (Application.isPlaying)

@@ -6,11 +6,10 @@ namespace AICore
 {
 	public class AICombatBrain : MonoBehaviour
 	{
-		public float attackSpeed = 1f;
 		[SerializeField] private LayerMask playerLayerMask;
 
 		private AIBrainInterface brainInterface;
-		private float radius = 2f;
+		private readonly float radius = 1.5f;
 
 		//--------------------------
 		// MonoBehaviour methods

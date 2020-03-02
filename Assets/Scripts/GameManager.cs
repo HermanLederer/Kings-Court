@@ -23,7 +23,11 @@ public class GameManager : MonoBehaviour
 	//--------------------------
 	public void Register(AICore.AITeam team)
 	{
-		if (!teams.Contains(team)) teams.Add(team);
+		if (!teams.Contains(team))
+		{
+			teams.Add(team);
+			Debug.Log("Team " + team + " registered");
+		}
 	}
 
 	public void Eliminate(AICore.AITeam team)

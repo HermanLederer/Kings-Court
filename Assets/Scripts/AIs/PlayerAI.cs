@@ -8,8 +8,44 @@ using UnityEngine;
 /// </summary>
 public class PlayerAI : MonoBehaviour
 {
+	// Other components variables
+	protected AICore.AIBrainInterface target;
+	protected AICore.AIBrainInterface assassin;
+	protected AICore.AIBrainInterface stunner;
+
 	// Editor variables
-	[SerializeField] protected AICore.AIBrainInterface target;
-	[SerializeField] protected AICore.AIBrainInterface assassin;
-	[SerializeField] protected AICore.AIBrainInterface stunner;
+	[Header("Team")]
+	[SerializeField] protected AICore.AITeam team;
+	[Header("Prefabs")]
+	[SerializeField] protected GameObject targetPrefab;
+	[SerializeField] protected GameObject assassinPrefab;
+	[SerializeField] protected GameObject stunnerPrefab;
+
+	// Private variables
+	protected AICore.AIBrainInterface[] members;
+
+	protected void Awake()
+	{
+		// instantiating prefabs
+		target = Instantiate(targetPrefab, transform.position + Vector3.right * -1f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+		assassin = Instantiate(assassinPrefab, transform.position, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+		stunner = Instantiate(stunnerPrefab, transform.position + Vector3.right, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+
+		// assinging the teams
+		target.team = team;
+		assassin.team = team;
+		stunner.team = team;
+
+		// creating a members array for ease of use
+		members = new AICore.AIBrainInterface[3];
+		members[0] = target;
+		members[1] = assassin;
+		members[2] = stunner;
+	}
+
+	protected void Start()
+	{
+		// registering the team in game manager
+		GameManager.instance.Register(team);
+	}
 }
