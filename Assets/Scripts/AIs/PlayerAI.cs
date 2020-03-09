@@ -30,9 +30,9 @@ public class PlayerAI : MonoBehaviour
 	protected void Awake()
 	{
 		// instantiating prefabs
-		target = Instantiate(targetPrefab, transform.position + Vector3.right * -1f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+		target = Instantiate(targetPrefab, transform.position + Vector3.right * -2f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
 		assassin = Instantiate(assassinPrefab, transform.position, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
-		stunner = Instantiate(stunnerPrefab, transform.position + Vector3.right, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+		stunner = Instantiate(stunnerPrefab, transform.position + Vector3.right * 2f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
 
 		// assinging the teams
 		target.team = team;
