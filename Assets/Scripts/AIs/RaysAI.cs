@@ -99,6 +99,10 @@ public class RaysAI : PlayerAI
 			//SnuffleSnuff will run and hide behind a nearby corner.
 			//Trigger Amari's GuardingStance.
 		}
+		else
+		{
+			//roam normally.
+		}
 
 
 
