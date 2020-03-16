@@ -19,11 +19,9 @@ public class RaysAI : PlayerAI
 	//--------------------------
 	new void Start()
 	{
-		base.Start();
-		target = Instantiate(targetPrefab, transform.position + Vector3.right * -2f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
-		assassin = Instantiate(assassinPrefab, transform.position, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
-		stunner = Instantiate(stunnerPrefab, transform.position + Vector3.right * 2f, transform.rotation, transform).GetComponent<AICore.AIBrainInterface>();
+
 	}
+
 
 	void Update()
 	{
