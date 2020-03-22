@@ -19,6 +19,7 @@ MonoBehaviour:
     type: 3}
   stunnerPrefab: {fileID: 2782972717202752895, guid: 3d4b492d1b662f84e81392d83733747f,
     type: 3}
+  DeathCanvas: {fileID: 0}
 --- !u!1001 &3390396568773001577
 PrefabInstance:
   m_ObjectHideFlags: 0
