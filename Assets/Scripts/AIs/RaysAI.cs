@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RaysAI : PlayerAI
-{
+public class RaysAI : PlayerAI {
 	// Other components
+	private int redPointCounter = 0;
 	public GameObject rayPoints;
 	private ArrayList red;
 	private ArrayList blue;
@@ -22,7 +22,7 @@ public class RaysAI : PlayerAI
 	//--------------------------
 	new void Start()
 	{
-		
+		//Load in all points.
 	}
 
 
@@ -31,8 +31,6 @@ public class RaysAI : PlayerAI
 		//-------------------------------------------------------------------------------
 		//The war bringer, Nio (Assassin)
 		//check what Nio sees.
-		//if Nio sees an enemy defender, nio head in that direction.
-		//Nio will then move to pass the defender, continuously checking if they see the target.
 		//if at any time Nio sees the target, it will chase.
 		//if Nio sees an attacker, Trigger WarbringerSplit.
 		//else if Nio sees nothing, then she'll return to roaming.
@@ -43,7 +41,7 @@ public class RaysAI : PlayerAI
 				warbringerSplit = true;
 			}
 			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target)
-			{ 
+			{
 				assassin.SetDestination(visibleEntityInterface.transform.position);
 				WarBringer = true;
 			}
@@ -62,12 +60,22 @@ public class RaysAI : PlayerAI
 			warbringerSplitTimer += Time.deltaTime;
 		}
 		//check every second if we still see anyone.
-		if(warbringerSplitTimer >= 1f)
+		if (warbringerSplitTimer >= 1f)
 		{
 			warbringerSplit = false;
 		}
 
-		//roaming isn't done yet.
+		//roaming if nothing else is going on~
+		if ((WarBringer == false) && (warbringerSplit == false))
+		{
+			//move between red points that you havent recently visited.
+			//if you hit a redpoint, remove it from the list.
+			redPointCounter += 1;
+			if (redPointCounter == 10)
+			{
+
+			}
+		}
 
 
 		//-------------------------------------------------------------------------------
@@ -122,6 +130,10 @@ public class RaysAI : PlayerAI
 	//--------------------------
 	// RaysAI methods
 	//--------------------------
-
+	void redReset()
+	{
+		redPointCounter = 0;
+		//reload all red points.
+	}
 
 }
