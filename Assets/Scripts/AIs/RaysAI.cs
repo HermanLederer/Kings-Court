@@ -5,7 +5,10 @@ using UnityEngine;
 public class RaysAI : PlayerAI
 {
 	// Other components
-
+	public GameObject rayPoints;
+	private ArrayList red;
+	private ArrayList blue;
+	private ArrayList green;
 	// Editor variables
 
 	// Public variables
@@ -19,7 +22,7 @@ public class RaysAI : PlayerAI
 	//--------------------------
 	new void Start()
 	{
-
+		
 	}
 
 
