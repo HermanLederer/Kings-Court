@@ -22,7 +22,6 @@ public class RaysAI : PlayerAI {
 	//--------------------------
 	new void Start()
 	{
-		base.Start();
 		//Load in all points.
 	}
 
@@ -69,14 +68,11 @@ public class RaysAI : PlayerAI {
 		//roaming if nothing else is going on~
 		if ((WarBringer == false) && (warbringerSplit == false))
 		{
-			//get the 2 closest red points from the list.
-			//randomly move to one of them (to make sure we're not too predictable)
-			//if you hit a redpoint, remove it from the list. to make sure we dont accidentally walk back and forth
-			redPointCounter += 1;
-			if (redPointCounter == 10)
-			{
+			//get the 2 closest red points from the list. currently just one
+		
+			//assassin.SetDestination(tMin.position);
+			//set tMin as the place to walk to.
 
-			}
 		}
 
 
@@ -133,6 +129,23 @@ public class RaysAI : PlayerAI {
 	//--------------------------
 	// RaysAI methods
 	//--------------------------
+
+	Transform AssassinWanderer(Transform[] redblock)
+	{
+		Transform tMin = null;
+		float minDist = Mathf.Infinity;
+		Vector3 currentPos = transform.position;
+		foreach (Transform t in redblock)
+		{
+			float dist = Vector3.Distance(t.position, currentPos);
+			if (dist < minDist)
+			{
+				tMin = t;
+				minDist = dist;
+			}
+		}
+		return tMin;
+	}
 	void redReset()
 	{
 		redPointCounter = 0;
