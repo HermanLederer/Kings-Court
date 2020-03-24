@@ -68,8 +68,9 @@ public class RaysAI : PlayerAI {
 		//roaming if nothing else is going on~
 		if ((WarBringer == false) && (warbringerSplit == false))
 		{
-			//move between red points that you havent recently visited.
-			//if you hit a redpoint, remove it from the list.
+			//get the 2 closest red points from the list.
+			//randomly move to one of them (to make sure we're not too predictable)
+			//if you hit a redpoint, remove it from the list. to make sure we dont accidentally walk back and forth
 			redPointCounter += 1;
 			if (redPointCounter == 10)
 			{
@@ -95,8 +96,9 @@ public class RaysAI : PlayerAI {
 		//Sir Noble SnuffleSnuff (Target)
 		//Follow Nio.
 		//Check what SnuffleSnuff sees.
-		//If something is approaching SnuffleSnuff, trigger AmariStungun to stun it. then run the other way.
-		//T
+		//If an attacker is approaching SnuffleSnuff, trigger AmariStungun to stun it. 
+		//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
+		//if not, instead run to the second nearest.
 
 
 		//snufflesnuffSplit
