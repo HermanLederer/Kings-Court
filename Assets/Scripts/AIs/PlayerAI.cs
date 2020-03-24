@@ -52,6 +52,7 @@ public class PlayerAI : MonoBehaviour
 	protected void Start()
 	{
 		// registering the team in game manager
+		Debug.Log(team);
 		GameManager.instance.Register(team);
 	}
 

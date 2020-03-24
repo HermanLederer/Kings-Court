@@ -8,9 +8,10 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance;
 	#endregion
 
-	// 1 - Amar
-	// 2 - Herman
-	// 3 - Ray
+	// Editor variables
+	[SerializeField] private GameUI gameUI;
+
+	// Private variables
 	private List<AICore.AITeam> teams;
 
 	//--------------------------
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (teams.Contains(team))
 		{
+			gameUI.Eliminate(team);
 			Debug.Log("Team " + team + " eliminated");
 			teams.Remove(team);
 			if (teams.Count == 1) DecalreWinnder(teams[0]);
@@ -47,6 +49,6 @@ public class GameManager : MonoBehaviour
 
 	public void DecalreWinnder(AICore.AITeam team)
 	{
-		Debug.Log("Team " + team + " won!");
+		gameUI.DeclareWinner(team);
 	}
 }

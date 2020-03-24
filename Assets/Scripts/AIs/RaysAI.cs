@@ -22,6 +22,7 @@ public class RaysAI : PlayerAI {
 	//--------------------------
 	new void Start()
 	{
+		base.Start();
 		//Load in all points.
 	}
 
