@@ -9,8 +9,6 @@ namespace AICore
 	/// </summary>
 	public class AIPerceptionBrain : MonoBehaviour
 	{
-		// Other components
-
 		// Editor variables
 		[Range(0, 360)]
 		[SerializeField] private float angleOfView = 3f;
