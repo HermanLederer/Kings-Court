@@ -5,7 +5,7 @@ using UnityEngine;
 public class SmashController : MonoBehaviour {
     public FocusLevel FocusLevel;
 
-    public List<GameObject> Players;
+    public List<Transform> Players;
     //here we need to add the AI to. as individuals I would guess.
     //if they die, they need to be removed.
 
@@ -23,16 +23,36 @@ public class SmashController : MonoBehaviour {
     private Vector3 CameraPosition;
 
 
-
     private void Start()
     {
-        
+        GameObject[] game = GameObject.FindGameObjectsWithTag("player");
+
+        foreach (GameObject player in game)
+            if ( (gameObject.name != ("Player (Ray")) || (gameObject.name != ("Player(Herman)")) || (gameObject.name != ("Player(Amar)")) )
+            {
+                AddTransform(player.transform);
+            }
+
+    }
+    private void Update()
+    {
+        //if character a team dies. remove their stuff.
+
     }
 
+    public void AddTransform(Transform player)
+    {
+        Players.Add(player);
+    }
     private void LateUpdate()
     {
         CalculateCameraLocations();
         MoveCamera();
+    }
+
+    public void RemoveTransform(Transform player) // make sure that every AI script calls this when they die.
+    {
+        Players.Remove(player);
     }
 
 
