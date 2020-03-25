@@ -15,7 +15,6 @@ namespace AICore
 		// Other components
 		private AIPerceptionBrain perceptionBrain;
 		private AICombatBrain combatBrain;
-		private CharacterController characterController;
 		private NavMeshAgent navMeshAgent;
 
 		// Editor variables
@@ -31,7 +30,6 @@ namespace AICore
 		void Awake()
 		{
 			perceptionBrain = GetComponent<AIPerceptionBrain>();
-			characterController = GetComponent<CharacterController>();
 			combatBrain = GetComponent<AICombatBrain>();
 			navMeshAgent = GetComponent<NavMeshAgent>();
 
@@ -46,6 +44,7 @@ namespace AICore
 				{
 					Gizmos.color = Color.white;
 					Gizmos.DrawLine(transform.position, entityInterface.transform.position);
+					//if (stun >= Time.deltaTime) Gizmos.DrawSphere(transform.position, 1f);
 				}
 			}
 		}
@@ -64,6 +63,18 @@ namespace AICore
 		{
 			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return;
 			if (Time.time > stun) navMeshAgent.SetDestination(target);
+		}
+
+		public Vector3 GetVelocity()
+		{
+			return navMeshAgent.velocity;
+		}
+
+		public RaycastHit raycastForward(Vector3 direction)
+		{
+			RaycastHit hit;
+			Physics.Raycast(transform.position + Vector3.up, direction, out hit, perceptionBrain.radiusOfView);
+			return hit;
 		}
 
 		public List<AIBrainInterface> GetVisibleAIEntities()
