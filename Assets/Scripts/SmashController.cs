@@ -10,14 +10,14 @@ public class SmashController : MonoBehaviour {
     //if they die, they need to be removed.
 
     public float DepthUpdateSpeed = 7f;
-    public float AngleUpdateSpeed = 7f;
+    //public float AngleUpdateSpeed = 7f;
     public float PositionUpdateSpeed = 10f;
 
     public float DepthMax = -10f;
     public float DepthMin = -22f;
 
-    public float AngleMax = 11f;
-    public float AngleMind = 3f;
+    //public float AngleMax = 11f;
+   //public float AngleMin = 3f;
 
     private float CameraEurlerX;
     private Vector3 CameraPosition;
@@ -67,13 +67,14 @@ public class SmashController : MonoBehaviour {
             targetPosition.x = Mathf.MoveTowards(position.y, CameraPosition.y, PositionUpdateSpeed * Time.deltaTime);
             gameObject.transform.position = targetPosition;
         }
-
+/*
         Vector3 localEulerAngles = gameObject.transform.localEulerAngles;
         if (localEulerAngles.x != CameraEurlerX)
         {
             Vector3 targetEulerAngles = new Vector3(CameraEurlerX, localEulerAngles.y, localEulerAngles.z);
             gameObject.transform.localEulerAngles = Vector3.MoveTowards(localEulerAngles, targetEulerAngles, AngleUpdateSpeed * Time.deltaTime);
         }
+*/
     }
 
     private void CalculateCameraLocations()
@@ -104,9 +105,9 @@ public class SmashController : MonoBehaviour {
         float lerpPercent = Mathf.InverseLerp(0, (FocusLevel.HalfXBounds + FocusLevel.HalfYBounds) / 2, extents);
 
         float depth = Mathf.Lerp(DepthMax, DepthMin, lerpPercent);
-        float angle = Mathf.Lerp(AngleMax, AngleMind, lerpPercent);
+        //float angle = Mathf.Lerp(AngleMax, AngleMin, lerpPercent);
 
-        CameraEurlerX = angle;
+        //CameraEurlerX = angle;
         CameraPosition = new Vector3(averageCenter.x, averageCenter.y, depth);
     }
 }
