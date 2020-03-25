@@ -13,7 +13,7 @@ public class SmashController : MonoBehaviour {
     public float AngleUpdateSpeed = 7f;
     public float PositionUpdateSpeed = 10f;
 
-    public float DepthMax = -5f;
+    public float DepthMax = -10f;
     public float DepthMin = -22f;
 
     public float AngleMax = 11f;
