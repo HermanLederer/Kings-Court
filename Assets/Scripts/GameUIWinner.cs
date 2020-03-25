@@ -12,12 +12,17 @@ public class GameUIWinner : MonoBehaviour
     void Start()
     {
 		text = GetComponent<Text>();
-		text.color = new Color(1, 1, 1, Mathf.Sin(Time.time * 5f));
+		SetColor();
 	}
 
     // Update is called once per frame
     void Update()
     {
-		text.color = new Color(1, 1, 1, Mathf.Sin(Time.time * 5f));
-    }
+		SetColor();
+	}
+
+	private void SetColor()
+	{
+		text.color = new Color(1, 1, 1, Mathf.Sin(Time.time * 5f) + 1 * 0.5f);
+	}
 }
