@@ -6,6 +6,8 @@ public class SmashController : MonoBehaviour {
     public FocusLevel FocusLevel;
 
     public List<GameObject> Players;
+    //here we need to add the AI to. as individuals I would guess.
+    //if they die, they need to be removed.
 
     public float DepthUpdateSpeed = 7f;
     public float AngleUpdateSpeed = 7f;
