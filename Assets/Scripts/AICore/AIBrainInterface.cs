@@ -70,11 +70,9 @@ namespace AICore
 			return navMeshAgent.velocity;
 		}
 
-		public RaycastHit raycastForward(Vector3 direction)
+		public bool raycastForward(out RaycastHit hit)
 		{
-			RaycastHit hit;
-			Physics.Raycast(transform.position + Vector3.up, direction, out hit, perceptionBrain.radiusOfView);
-			return hit;
+			return Physics.Raycast(transform.position, transform.forward, out hit, perceptionBrain.radiusOfView);
 		}
 
 		public List<AIBrainInterface> GetVisibleAIEntities()
