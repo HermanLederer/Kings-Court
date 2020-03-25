@@ -29,6 +29,7 @@ public class RaysAI : PlayerAI {
 	{
 		//Load in all points.
 		base.Start();
+		AssassinWandererSet();
 	}
 
 
@@ -72,13 +73,9 @@ public class RaysAI : PlayerAI {
 		}
 
 		//roaming if nothing else is going on~
-		if ((WarBringer == false) && (warbringerSplit == false))
+		if ((WarBringer == false) && (warbringerSplit == false) && (lastNioDestination == nioDestination))
 		{
-			//get the 2 closest red points from the list. currently just one
-		
-			//assassin.SetDestination(tMin.position);
-			//set tMin as the place to walk to.
-
+			AssassinWanderer();
 		}
 
 
@@ -138,23 +135,24 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWanderer()
 	{
+		//walk to destination unless interupted.
+	}
+
+	void AssassinWandererSet()
+	{
 		//get the list of all the red blocks
 		//pick one at random and set as destination
 		//compare destination with the last visited destination
 		//is this the same? then we'll do it again.
+		//is it not? then we trigger Assassin wanderer.
 	}
 
 	private void OnCollisionStay(Collision other)
 	{
-		if (other.gameObject.CompareTag("red"))
+		if (other.gameObject.CompareTag("Red") && (other.gameObject.transform.position == nioDestination))
 		{
-
+			lastNioDestination = other.gameObject.transform.position;
+			AssassinWandererSet();
 		}
 	}
-	void redReset()
-	{
-		redPointCounter = 0;
-		//reload all red points.
-	}
-
 }
