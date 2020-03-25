@@ -36,7 +36,22 @@ public class SmashController : MonoBehaviour {
 
     private void MoveCamera()
     {
+        Vector3 position = gameObject.transform.position;
+        if (position != CameraPosition)
+        {
+            Vector3 targetPosition = Vector3.zero;
+            targetPosition.x = Mathf.MoveTowards(position.x, CameraPosition.x, PositionUpdateSpeed * Time.deltaTime);
+            targetPosition.y = Mathf.MoveTowards(position.y, CameraPosition.y, PositionUpdateSpeed * Time.deltaTime);
+            targetPosition.x = Mathf.MoveTowards(position.y, CameraPosition.y, PositionUpdateSpeed * Time.deltaTime);
+            gameObject.transform.position = targetPosition;
+        }
 
+        Vector3 localEulerAngles = gameObject.transform.localEulerAngles;
+        if (localEulerAngles.x != CameraEurlerX)
+        {
+            Vector3 targetEulerAngles = new Vector3(CameraEurlerX, localEulerAngles.y, localEulerAngles.z);
+            gameObject.transform.localEulerAngles = Vector3.MoveTowards(localEulerAngles, targetEulerAngles, AngleUpdateSpeed * Time.deltaTime);
+        }
     }
 
     private void CalculateCameraLocations()
@@ -51,8 +66,25 @@ public class SmashController : MonoBehaviour {
 
             if (!FocusLevel.FocusBounds.Contains(playerPostion))
             {
-
+                float playerX = Mathf.Clamp(playerPostion.x, FocusLevel.FocusBounds.min.x, FocusLevel.FocusBounds.max.x);
+                float playerY = Mathf.Clamp(playerPostion.y, FocusLevel.FocusBounds.min.y, FocusLevel.FocusBounds.max.y);
+                float playerZ = Mathf.Clamp(playerPostion.z, FocusLevel.FocusBounds.min.z, FocusLevel.FocusBounds.max.z);
+                playerPostion = new Vector3(playerX, playerY, playerZ);
             }
+
+            totalPositions += playerPostion;
+            playerBounds.Encapsulate(playerPostion);
         }
+
+        averageCenter = (totalPositions / Players.Count);
+
+        float extents = (playerBounds.extents.x + playerBounds.extents.y);
+        float lerpPercent = Mathf.InverseLerp(0, (FocusLevel.HalfXBounds + FocusLevel.HalfYBounds) / 2, extents);
+
+        float depth = Mathf.Lerp(DepthMax, DepthMin, lerpPercent);
+        float angle = Mathf.Lerp(AngleMax, AngleMind, lerpPercent);
+
+        CameraEurlerX = angle;
+        CameraPosition = new Vector3(averageCenter.x, averageCenter.y, depth);
     }
 }
