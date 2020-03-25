@@ -11,8 +11,8 @@ namespace AICore
 	{
 		// Editor variables
 		[Range(0, 360)]
-		[SerializeField] private float angleOfView = 3f;
-		[SerializeField] private float radiusOfView = 3f;
+		[SerializeField] public float angleOfView = 3f;
+		[SerializeField] public float radiusOfView = 3f;
 		[SerializeField] private LayerMask playerLayerMask;
 
 		//--------------------------
