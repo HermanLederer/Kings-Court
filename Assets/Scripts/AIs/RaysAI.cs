@@ -5,10 +5,9 @@ using UnityEngine;
 public class RaysAI : PlayerAI {
 	// Other components
 	private int redPointCounter = 0;
-	public GameObject rayPoints;
-	private ArrayList red;
-	private ArrayList blue;
-	private ArrayList green;
+	public List<GameObject> red;
+	public List<GameObject> blue;
+	public List<GameObject> green;
 	// Editor variables
 
 	// Public variables
@@ -17,6 +16,12 @@ public class RaysAI : PlayerAI {
 	private bool WarBringer = false;
 	private bool warbringerSplit = false;
 	private float warbringerSplitTimer = 0.0f;
+
+	private Vector3 nioDestination;
+	private Vector3 lastNioDestination;
+	private Vector3 snuffleSnuffeHidingSpot;
+	private Vector3 amariDefense;
+	private Vector3 lastAmariDefense;
 	//--------------------------
 	// MonoBehaviour methods
 	//--------------------------
@@ -130,21 +135,20 @@ public class RaysAI : PlayerAI {
 	// RaysAI methods
 	//--------------------------
 
-	Transform AssassinWanderer(Transform[] redblock)
+	void AssassinWanderer()
 	{
-		Transform tMin = null;
-		float minDist = Mathf.Infinity;
-		Vector3 currentPos = transform.position;
-		foreach (Transform t in redblock)
+		//get the list of all the red blocks
+		//pick one at random and set as destination
+		//compare destination with the last visited destination
+		//is this the same? then we'll do it again.
+	}
+
+	private void OnCollisionStay(Collision other)
+	{
+		if (other.gameObject.CompareTag("red"))
 		{
-			float dist = Vector3.Distance(t.position, currentPos);
-			if (dist < minDist)
-			{
-				tMin = t;
-				minDist = dist;
-			}
+
 		}
-		return tMin;
 	}
 	void redReset()
 	{
