@@ -18,104 +18,175 @@ public class HermansAI : PlayerAI
 		base.Start();
 	}
 
-	private float targeTurnValue = 0f;
 	private float targetScare = 0f;
-	private float stunnerTurnaroundValue = 0f;
+	private Vector3 targetScarePosition = Vector3.zero;
+	private Vector3 targetScareDirection = Vector3.zero;
+
+	private float enemyTargetLastSeenTime = 0f;
+	private Vector3 enemyTargetLastSeenPosition = Vector3.zero;
+
+	private float stunnerTurnAroundValue = 0f;
 
 	private void Update()
 	{
-		// Previous direction
-		Vector3 dir = target.transform.forward;
+		//
+		//
+		// Previous directions
+		Vector3 targetForward = target.transform.forward;
+		Vector3 assassinForward = assassin.transform.forward;
+		Vector3 stunnerForward = stunner.transform.forward;
 
+		//
+		//
 		// Wavy movement
-		Vector3 wavyMovement = target.transform.right * (Mathf.Sin(Time.time) * 0.32f);
+		Vector3 wavyMovementTarget = target.transform.right * Mathf.Sin(Time.time * 2.5f) * 0.5f;
+		Vector3 wavyMovementAssassin = target.transform.right * Mathf.Sin(Time.time * 1f) * 0.5f;
+		Vector3 wavyMovementStunner = target.transform.right * Mathf.Sin(Time.time * 5f) * 1f;
 
-		// Wall resistance
-		
-
-		// Random navigation
-		if (Time.time > targetScare)
-		{
-			if (target.GetVelocity().magnitude <= 0.1f)
-			{
-				// steering sideways
-				dir += target.transform.right * Mathf.Sin(targeTurnValue);
-				Debug.DrawRay(target.transform.position, target.transform.right * Mathf.Sin(targeTurnValue) * 2, Color.green);
-				targeTurnValue += 1f * Time.deltaTime;
-			}
-		}
-
-		// Individual directions based on target
-		Vector3 dirTarget = dir;
-		//Vector3 dirAssassin = dir;
-		//Vector3 dirStunner = dir;
-
-		// Stunner wants to look around
-		//stunnerTurnaroundValue += Time.deltaTime;// * 0.5f;
-		//if (Mathf.Sin(stunnerTurnaroundValue) > 0f)
-		//{
-		//	dirStunner = -dirTarget;
-		//}
-
-		// Flocking
-		//if (Vector3.Distance(target.transform.position, assassin.transform.position) < 3f)
-		//{
-		//	Vector3 resistance = assassin.transform.position - target.transform.position;
-		//	float distance = Vector3.Distance(target.transform.position, assassin.transform.position);
-		//	dirAssassin += resistance * (3f - distance);
-		//	Debug.DrawRay(assassin.transform.position, resistance * (3f - distance), Color.blue);
-		//}
-
+		//
+		//
 		// Getting visible entities form all team members
 		List<AICore.AIBrainInterface> visibleEntities = target.GetVisibleAIEntities();
 		visibleEntities.AddRange(assassin.GetVisibleAIEntities());
 		visibleEntities.AddRange(stunner.GetVisibleAIEntities());
 
+		//
+		//
 		// Reacting to enemies
 		foreach (AICore.AIBrainInterface visibleEntityInterface in visibleEntities)
 		{
-			// target avoids assassin
 			if (visibleEntityInterface.team != target.team)
-				if (visibleEntityInterface.type != AICore.AIType.target)
+			{
+				// enemy assassin
+				if (visibleEntityInterface.type == AICore.AIType.assassin)
 				{
-					Vector3 enemyDir = (visibleEntityInterface.transform.position - target.transform.position).normalized;
-					dirTarget = -enemyDir;
-					Debug.DrawRay(target.transform.position, enemyDir, Color.red);
+					if (Vector3.Distance(target.transform.position, visibleEntityInterface.transform.position) < Mathf.Max(15f, Vector3.Distance(target.transform.position, stunner.transform.position)))
+					{
+						targetScare = Time.time + 5f;
+						targetScareDirection = -(visibleEntityInterface.transform.position - target.transform.position).normalized;
+						targetScarePosition = visibleEntityInterface.transform.position;
+					}
 				}
+
+				// enemy target
+				else if (visibleEntityInterface.type == AICore.AIType.target)
+				{
+					enemyTargetLastSeenPosition = visibleEntityInterface.transform.position;
+					enemyTargetLastSeenTime = Time.time;
+				}
+			}
 		}
 
-		// Movement
-		Debug.DrawRay(target.transform.position, dir * 2f);
-		target.SetDestination(target.transform.position + dirTarget);
+		//
+		//
+		// Analizing data and moving
+		Vector3 direction;
 
-		//Debug.DrawRay(assassin.transform.position, dir * 2f);
-		//assassin.SetDestination(target.transform.position + dirAssassin);
+		//
+		//
+		// Target
+		direction = targetForward;
 
-		//Debug.DrawRay(stunner.transform.position, dir * 2f);
-		//stunner.SetDestination(target.transform.position + dirStunner);
-
-		return;
-
-		// target
-		foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
+		if (targetScare >= Time.time)
 		{
-			if (visibleEntityInterface.team != target.team) target.SetDestination(-visibleEntityInterface.transform.position);
+			direction = targetScareDirection;
+		}
+		else
+		{
+			if (Vector3.Distance(target.transform.position, stunner.transform.position) > 7.5f)
+			{
+				direction += (target.transform.position - stunner.transform.position).normalized;
+				Debug.DrawRay(target.transform.position, (target.transform.position - stunner.transform.position).normalized * 5f, Color.blue);
+			}
 		}
 
-		// assassin
-		foreach (AICore.AIBrainInterface visibleEntityInterface in assassin.GetVisibleAIEntities())
-		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target) assassin.SetDestination(visibleEntityInterface.transform.position);
-		}
+		direction += wavyMovementTarget;
+		direction = addWallResistance(target, direction);
+		target.SetDestination(target.transform.position + direction);
 
-		// stunner
-		foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
+		//
+		//
+		// Assassin
+		if (enemyTargetLastSeenTime >= Time.time - 8f)
 		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type != AICore.AIType.stunner) stunner.SetDestination(visibleEntityInterface.transform.position);
+			if (assassin.GetVelocity().magnitude <= 0)
+				enemyTargetLastSeenTime = 0f;
+
+			assassin.SetDestination(enemyTargetLastSeenPosition);
+		}
+		else
+		{
+			if (Vector3.Distance(assassin.transform.position, target.transform.position) > 20f)
+			{
+				assassin.SetDestination(target.transform.position);
+			}
+			else
+			{
+				direction = assassinForward;
+				direction += wavyMovementAssassin;
+				if (Mathf.Sin(Time.time * 1f) > 0.1f)
+					direction = -direction;
+
+				direction = addWallResistance(assassin, direction);
+
+				if (Vector3.Distance(assassin.transform.position, target.transform.position) < 7f)
+					direction += (assassin.transform.position - target.transform.position).normalized;
+
+				assassin.SetDestination(assassin.transform.position + direction);
+			}
+		}
+		
+		//
+		//
+		// Stunner
+		if (targetScare >= Time.time)
+		{
+			if (Vector3.Distance(stunner.transform.position, targetScarePosition) < 1.5f)
+				targetScare = 0;
+
+			stunner.SetDestination(targetScarePosition);
+		}
+		else
+		{
+			if (Vector3.Distance(stunner.transform.position, target.transform.position) > 7.5f)
+			{
+				stunner.SetDestination(target.transform.position);
+			}
+			else
+			{
+				direction = stunnerForward;
+				direction += wavyMovementStunner;
+
+				if (Mathf.Sin(Time.time * 1f) > 0.1f)
+					direction = -direction;
+
+				if (Vector3.Distance(stunner.transform.position, target.transform.position) < 2.5f)
+					direction += (stunner.transform.position - target.transform.position).normalized;
+
+				direction = addWallResistance(stunner, direction);
+				stunner.SetDestination(stunner.transform.position + direction);
+			}
 		}
 	}
 
 	//--------------------------
 	// HermansAI methods
 	//--------------------------
+	private Vector3 addWallResistance(AICore.AIBrainInterface member, Vector3 direction)
+	{
+		RaycastHit hit;
+		float wallDistance = 7.5f;
+		Vector3 wallResistance = Vector3.zero;
+		if (member.raycastForward(out hit))
+		{
+			if (hit.distance <= wallDistance)
+			{
+				wallResistance = hit.normal * (hit.distance / wallDistance);
+			}
+			else
+				wallResistance = Vector3.zero;
+		}
+
+		return direction.normalized + wallResistance;
+	}
 }
