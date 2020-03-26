@@ -8,6 +8,7 @@ public class RaysAI : PlayerAI {
 	public List<GameObject> red;
 	public List<GameObject> blue;
 	public List<GameObject> green;
+	GameObject[] redList; //test for seeing if this is a thing.
 	// Editor variables
 
 	// Public variables
@@ -17,11 +18,11 @@ public class RaysAI : PlayerAI {
 	private bool warbringerSplit = false;
 	private float warbringerSplitTimer = 0.0f;
 
-	private Vector3 nioDestination;
-	private Vector3 lastNioDestination;
-	private Vector3 snuffleSnuffeHidingSpot;
-	private Vector3 amariDefense;
-	private Vector3 lastAmariDefense;
+	private Transform nioDestination;
+	private Transform lastNioDestination;
+	private Transform snuffleSnuffeHidingSpot;
+	private Transform amariDefense;
+	private Transform lastAmariDefense;
 	//--------------------------
 	// MonoBehaviour methods
 	//--------------------------
@@ -135,6 +136,14 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWanderer()
 	{
+		//if the destination is not the same as the last visited destination. 
+
+		int n = Random.Range(0, red.Count);
+		//nioDestination = red[n];
+		if (nioDestination == lastNioDestination)
+	{
+
+	}
 		//walk to destination unless interupted.
 	}
 
@@ -149,9 +158,9 @@ public class RaysAI : PlayerAI {
 
 	private void OnCollisionStay(Collision other)
 	{
-		if (other.gameObject.CompareTag("Red") && (other.gameObject.transform.position == nioDestination))
+		if (other.transform.CompareTag("Red") && (other.gameObject.transform == nioDestination))
 		{
-			lastNioDestination = other.gameObject.transform.position;
+			lastNioDestination = other.transform;
 			AssassinWandererSet();
 		}
 	}
