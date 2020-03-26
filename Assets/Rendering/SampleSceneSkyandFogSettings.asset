@@ -116,6 +116,7 @@ MonoBehaviour:
   components:
   - {fileID: 3912485203739470195}
   - {fileID: -1658960478407648048}
+  - {fileID: 7627917827677671835}
   - {fileID: 5321722785694334585}
 --- !u!114 &3912485203739470195
 MonoBehaviour:
@@ -247,8 +248,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   exposure:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 8.58
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -274,20 +275,20 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   top:
-    m_OverrideState: 0
-    m_Value: {r: 0, g: 0, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0.3601873, b: 1, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   middle:
-    m_OverrideState: 0
-    m_Value: {r: 0.3, g: 0.7, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.3938679, g: 0.41229838, b: 0.5, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
   bottom:
-    m_OverrideState: 0
-    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
