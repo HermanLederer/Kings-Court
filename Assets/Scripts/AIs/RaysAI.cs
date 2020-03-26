@@ -9,13 +9,17 @@ public class RaysAI : PlayerAI {
 	public List<GameObject> blue;
 	public List<GameObject> green;
 	GameObject[] redList; //test for seeing if this is a thing.
-	// Editor variables
+						  // Editor variables
 
 	// Public variables
 
 	// Private variables
+	private bool guardingStance = false;
+	private bool amariStunGun = false;
 	private bool WarBringer = false;
 	private bool warbringerSplit = false;
+	private bool snuffleSnuffSplit = false;
+	private bool regroup = false;
 	private float warbringerSplitTimer = 0.0f;
 
 	private Transform nioDestination;
@@ -47,6 +51,7 @@ public class RaysAI : PlayerAI {
 			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
 			{
 				warbringerSplit = true;
+				snuffleSnuffSplit = true;
 			}
 			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target)
 			{
@@ -79,6 +84,11 @@ public class RaysAI : PlayerAI {
 			AssassinWanderer();
 		}
 
+		if ((regroup = true) && (WarBringer == false))
+		{
+			//regroup with the others.
+			//if we're in range of the others. trigger wanderer.
+		}
 
 		//-------------------------------------------------------------------------------
 
@@ -86,25 +96,43 @@ public class RaysAI : PlayerAI {
 
 		//Lady 'Get fucked' Amari (Defender)
 		//Circle SnuffleSnuff
-		//If Amari sees an attacker, Trigger snufflsnuff split.
+
 
 		//Amiri's Guarding stance
-		//Amiri will patroll, in case amiri sees any attacker. she will run and stunn. Then trigger snuffleSnuffSplit will run the other way.
+		if ((guardingStance == true) && (amariStunGun == false))
+		{
+			//Amiri will patroll, in case amiri sees any attacker. she will run and stunn. --------------
+
+			//Then trigger snuffleSnuffSplit will run the other way.
+			snuffleSnuffSplit = true;
+
+			//check the distance between a registered attacker and snuffle snuff
+			//register the distance, and then check in the following 0.2secs if it's coming closer?
+			if (false)
+			{
+				//If an attacker is approaching SnuffleSnuff, trigger AmariStungun to stun it. 
+				amariStunGun = true;
+			}
+
+		}
+
 
 
 		//------------------------------------------------------------------------------
 
 		//Sir Noble SnuffleSnuff (Target)
 		//Follow Nio.
-		//Check what SnuffleSnuff sees.
-		//If an attacker is approaching SnuffleSnuff, trigger AmariStungun to stun it. 
-		//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
-		//if not, instead run to the second nearest.
 
 
-		//snufflesnuffSplit
-		//run the oposite direction from the attaker Amari sees and hide out of sight.
-		//then wait for amari to have registered the area to be safe.
+
+		if (snuffleSnuffSplit == true)
+		{
+			//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
+			//if not, instead run to the second nearest.
+			//then wait untill the area is safe.
+		}
+
+
 
 
 		//Warbringer split
@@ -121,8 +149,13 @@ public class RaysAI : PlayerAI {
 
 
 		//AmariStungun
-		//Overrule guardingStance, and only attack the enemy attacker.
-		//if the enemy attacker hasnt gotten closer to SnuffleSnuff in the last 3 seconds, Go back to target and circling.
+		if (amariStunGun == true)
+		{
+			//Overrule guardingStance, (this is done via the guardingstance if statement.)
+			//if the enemy attacker hasnt gotten closer to SnuffleSnuff in the last 3 seconds, Go back to target and circling.
+			regroup = true; //call for a regroup with Nio. this can only be overruled if she's hunting a target.
+		}
+
 
 		//-------------------------------------------------------------------------------
 
@@ -140,11 +173,11 @@ public class RaysAI : PlayerAI {
 
 		int n = Random.Range(0, red.Count);
 		//nioDestination = red[n];
-		if (nioDestination == lastNioDestination)
+		if ((nioDestination == lastNioDestination) && (regroup == false))
 	{
+			//walk to destination unless interupted.
+		}
 
-	}
-		//walk to destination unless interupted.
 	}
 
 	void AssassinWandererSet()
@@ -154,6 +187,7 @@ public class RaysAI : PlayerAI {
 		//compare destination with the last visited destination
 		//is this the same? then we'll do it again.
 		//is it not? then we trigger Assassin wanderer.
+		AssassinWanderer();
 	}
 
 	private void OnCollisionStay(Collision other)
