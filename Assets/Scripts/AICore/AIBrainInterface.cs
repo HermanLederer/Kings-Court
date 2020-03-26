@@ -17,6 +17,7 @@ namespace AICore
 		private AICombatBrain combatBrain;
 		private NavMeshAgent navMeshAgent;
 		private AudioSource audioSource;
+		public Light light;
 
 		// Editor variables
 		[SerializeField] public AITeam team;
@@ -36,6 +37,7 @@ namespace AICore
 			combatBrain = GetComponent<AICombatBrain>();
 			navMeshAgent = GetComponent<NavMeshAgent>();
 			audioSource = GetComponent<AudioSource>();
+			light = GetComponentInChildren<Light>();
 
 			stun = 0;
 		}
@@ -59,6 +61,8 @@ namespace AICore
 		public void Stun(float time)
 		{
 			if (transform.parent.gameObject.GetComponent<PlayerAI>().isEliminated) return;
+			if (stun > Time.time) return;
+
 			SetDestination(transform.position);
 			stun = Time.time + time;
 			audioSource.PlayOneShot(stunSound);

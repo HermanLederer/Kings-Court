@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 1
+  lightColor: {r: 1, g: 0.75881445, b: 0, a: 0}
   targetPrefab: {fileID: 2782972717202752895, guid: 5c58d4ca6cf6fc74d94104dfe12b9693,
     type: 3}
   assassinPrefab: {fileID: 2782972717202752895, guid: 14e4ede923e91614abfc7c870c241433,
     type: 3}
   stunnerPrefab: {fileID: 2782972717202752895, guid: 3d4b492d1b662f84e81392d83733747f,
     type: 3}
-  DeathCanvas: {fileID: 0}
 --- !u!1001 &3390396568773001577
 PrefabInstance:
   m_ObjectHideFlags: 0

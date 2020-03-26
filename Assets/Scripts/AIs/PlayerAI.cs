@@ -14,7 +14,9 @@ public class PlayerAI : MonoBehaviour
 	protected AICore.AIBrainInterface stunner;
 
 	// Editor variables
+	[Header("Team")]
 	[SerializeField] protected AICore.AITeam team;
+	[SerializeField] protected Color lightColor;
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject targetPrefab;
 	[SerializeField] protected GameObject assassinPrefab;
@@ -36,8 +38,11 @@ public class PlayerAI : MonoBehaviour
 
 		// assinging the teams
 		target.team = team;
+		target.light.color = lightColor;
 		assassin.team = team;
+		assassin.light.color = lightColor;
 		stunner.team = team;
+		stunner.light.color = lightColor;
 
 		isEliminated = false;
 		spawnPosition = transform.position;

@@ -15,7 +15,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: b45b0170e95a6814d99d6c02f3f52b79,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.35
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: b45b0170e95a6814d99d6c02f3f52b79,
         type: 3}
@@ -136,6 +136,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_StoppingDistance
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438865135999610045, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.496
+      objectReference: {fileID: 0}
+    - target: {fileID: 8438865135999610045, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.611
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3246033807133791772, guid: efda16d68f0456c4499277b91b457972, type: 3}
