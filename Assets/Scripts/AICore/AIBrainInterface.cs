@@ -20,6 +20,7 @@ namespace AICore
 		// Editor variables
 		[SerializeField] public AITeam team;
 		[SerializeField] public AIType type;
+		[SerializeField] public GameObject deathFXPrefab;
 
 		// Private variables
 		public float stun { get; private set; }
@@ -98,6 +99,7 @@ namespace AICore
 
 		public void Burn()
 		{
+			Instantiate(deathFXPrefab, transform.position, transform.rotation);
 			StartCoroutine(BurnCorutine());
 		}
 

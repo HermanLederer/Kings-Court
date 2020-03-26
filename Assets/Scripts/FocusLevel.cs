@@ -9,7 +9,7 @@ public class FocusLevel : MonoBehaviour
     public float HalfZBounds = 25f;
 
     public Bounds FocusBounds;
-    // Start is called before the first frame update
+
     private void Start()
     {
         Vector3 position = gameObject.transform.position;
@@ -17,11 +17,5 @@ public class FocusLevel : MonoBehaviour
         bounds.Encapsulate(new Vector3(position.x - HalfXBounds, position.y - HalfYBounds, position.z - HalfZBounds));
         bounds.Encapsulate(new Vector3(position.x + HalfXBounds, position.y + HalfYBounds, position.z + HalfZBounds));
         FocusBounds = bounds;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
