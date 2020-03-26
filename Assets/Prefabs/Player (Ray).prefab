@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 2
-  lightColor: {r: 0.035300493, g: 1, b: 0, a: 0}
+  lightColor: {r: 1, g: 0, b: 0.09557152, a: 0}
   targetPrefab: {fileID: 2782972717202752895, guid: 5c58d4ca6cf6fc74d94104dfe12b9693,
     type: 3}
   assassinPrefab: {fileID: 2782972717202752895, guid: 14e4ede923e91614abfc7c870c241433,
