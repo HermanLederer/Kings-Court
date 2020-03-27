@@ -1,16 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AmarsAI : PlayerAI
 {
-	// Editor variables
-
-	// Public variables
-
 	// Private variables
-
-	private float enemyDistanceRun = 4.0f;
+	private float enemyDistanceRun = 15f;
 
 	private float nextRandomMoveTime;
 
@@ -23,9 +19,11 @@ public class AmarsAI : PlayerAI
 		nextRandomMoveTime = 0f;
 	}
 
-
 	private void Update()
 	{
+		Vector3 targetWander = target.transform.right * Mathf.Sin(Time.time * 2.0f);
+		Vector3 assassinWander = assassin.transform.right * Mathf.Sin(Time.time * 1.5f);
+		Vector3 stunnerWander = stunner.transform.right * Mathf.Sin(Time.time * 6f);
 
 		if (nextRandomMoveTime <= Time.time)
 		{
@@ -37,28 +35,62 @@ public class AmarsAI : PlayerAI
 			nextRandomMoveTime = Time.time + 0.5f;
 		}
 
+		Vector3 follow;
+
 		// target
-		foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
+		follow = target.transform.forward;
+		
+		float distance = Vector3.Distance(transform.position, assassin.transform.position);
+		if (distance < enemyDistanceRun)
 		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.team != stunner.team
-			&& visibleEntityInterface.type == AICore.AIType.assassin) target.SetDestination(-visibleEntityInterface.transform.position);
+			Vector3 dirToEnemy = transform.position - assassin.transform.position;
+			Vector3 newPos = transform.position + dirToEnemy;
+
+			target.SetDestination(stunner.transform.position);
 		}
+		else
+		{
+			follow += (target.transform.position - stunner.transform.position).normalized;
+		}
+		follow += targetWander;
+		target.SetDestination(target.transform.position + follow);
+		
 
 		// assassin
 		foreach (AICore.AIBrainInterface visibleEntityInterface in assassin.GetVisibleAIEntities())
 		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target) assassin.SetDestination(visibleEntityInterface.transform.position);
-		}
+			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target)
+			{
+				assassin.SetDestination(visibleEntityInterface.transform.position);
+			}
 
-		// stunner
+			else if (Vector3.Distance(assassin.transform.position, target.transform.position) > 20f)
+			{
+				follow += (assassin.transform.position - target.transform.position).normalized;
+			}
+		}
+		
+
+		// Stunner
 		foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
 		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type != AICore.AIType.stunner) stunner.SetDestination(visibleEntityInterface.transform.position);
+			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
+			{
+			if (Vector3.Distance(stunner.transform.position, assassin.transform.position) > 20f)
+			{
+			stunner.SetDestination(assassin.transform.position);
+			}
+			}
 		}
 
+		if (Vector3.Distance(stunner.transform.position, target.transform.position) > 10f)
+		{
+			stunner.SetDestination(target.transform.position);
+		}
+		else
+		{
+			follow = stunner.transform.forward;
+			follow += stunnerWander;
+		}
 	}
-
-	//--------------------------
-	// AmarsAI methods
-	//--------------------------
 }
