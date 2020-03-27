@@ -52,6 +52,11 @@ PrefabInstance:
       propertyPath: type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3451704127864782607, guid: efda16d68f0456c4499277b91b457972,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4151186207547214677, guid: efda16d68f0456c4499277b91b457972,
         type: 3}
       propertyPath: attackSpeed
