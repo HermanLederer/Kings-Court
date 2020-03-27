@@ -9,7 +9,7 @@ public class RaysAI : PlayerAI {
 	public List<GameObject> blue;
 	public List<GameObject> green;
 	GameObject[] redList; //test for seeing if this is a thing.
-						  // Editor variables
+	
 
 	// Public variables
 
@@ -20,6 +20,10 @@ public class RaysAI : PlayerAI {
 	private bool warbringerSplit = false;
 	private bool snuffleSnuffSplit = false;
 	private bool regroup = false;
+	private bool greenSafe = true;
+	private float greenTimer = 0f;
+	private float recordedDistanceGreen;
+	private float newDistanceGreen;
 	private float warbringerSplitTimer = 0.0f;
 
 	private Transform nioDestination;
@@ -27,6 +31,8 @@ public class RaysAI : PlayerAI {
 	private Transform snuffleSnuffeHidingSpot;
 	private Transform amariDefense;
 	private Transform lastAmariDefense;
+
+	private int currentRedWP;
 	//--------------------------
 	// MonoBehaviour methods
 	//--------------------------
@@ -87,7 +93,13 @@ public class RaysAI : PlayerAI {
 		if ((regroup = true) && (WarBringer == false))
 		{
 			//regroup with the others.
+			assassin.SetDestination(this.targetPrefab.transform.position);
 			//if we're in range of the others. trigger wanderer.
+			if (Vector3.Distance(this.assassinPrefab.transform.position, this.targetPrefab.transform.position) < 5.0f)
+			{
+				AssassinWanderer();
+				regroup = false;
+			}
 		}
 
 		//-------------------------------------------------------------------------------
@@ -127,7 +139,9 @@ public class RaysAI : PlayerAI {
 
 		if (snuffleSnuffSplit == true)
 		{
+
 			//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
+			
 			//if not, instead run to the second nearest.
 			//then wait untill the area is safe.
 		}
@@ -139,6 +153,7 @@ public class RaysAI : PlayerAI {
 		if (warbringerSplit == true)
 		{
 			//SnuffleSnuff will run and hide behind a nearby corner.
+			//target.SetDestination(... transform position);
 			//Trigger Amari's GuardingStance.
 		}
 		else
@@ -151,9 +166,30 @@ public class RaysAI : PlayerAI {
 		//AmariStungun
 		if (amariStunGun == true)
 		{
+			greenTimer = +1f * Time.deltaTime;
 			//Overrule guardingStance, (this is done via the guardingstance if statement.)
+
 			//if the enemy attacker hasnt gotten closer to SnuffleSnuff in the last 3 seconds, Go back to target and circling.
-			regroup = true; //call for a regroup with Nio. this can only be overruled if she's hunting a target.
+			if((greenTimer % 0.2) == 0)
+			{
+				foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
+				{
+					if (((visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)/*&&(Vector3.Distance((this.target.transform.position, visibleEntityInterface.transform.position) > 5.0f)) */ ))					
+					{
+						warbringerSplit = true;
+						snuffleSnuffSplit = true;
+					}
+				}
+			}
+
+			if (greenTimer == 3f && greenSafe == true)
+			{
+				regroup = true; //call for a regroup with Nio. this can only be overruled if she's hunting a target.
+				snuffleSnuffSplit = false;
+				amariStunGun = false;
+				warbringerSplit = false;
+			}
+			
 		}
 
 
