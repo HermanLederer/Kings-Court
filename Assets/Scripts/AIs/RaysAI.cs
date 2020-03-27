@@ -10,6 +10,7 @@ public class RaysAI : PlayerAI {
 	public GameObject[] blueList;
 	public GameObject[] greenList;
 
+
 	// Public variables
 
 	// Private variables
@@ -46,6 +47,51 @@ public class RaysAI : PlayerAI {
 
 	void Update()
 	{
+		// collision detection. dunno why the other one isn't working, but it's included and commented out at the bottom.
+		var hitColliderNio = Physics.OverlapSphere(this.assassin.transform.position, 0.10f);
+		for (var i = 0; i < hitColliderNio.Length; i++)
+		{
+			if (hitColliderNio[i].tag == "Red")
+			{
+				if (hitColliderNio[i].gameObject.transform.position == redList[nioDestination].transform.position)
+				{
+					nioDestination = lastNioDestination;
+					AssassinWandererSet();
+				}
+			}
+		}
+
+		var hitColliderAmari = Physics.OverlapSphere(this.assassin.transform.position, 0.10f);
+		for (var i = 0; i < hitColliderAmari.Length; i++)
+		{
+			if (hitColliderAmari[i].tag == "Blue")
+			{
+				if (hitColliderAmari[i].gameObject.transform.position == blueList[amariDefense].transform.position)
+				{
+
+
+					if (snuffleSnuffSplit == true) //in case snufflesnuffsplit is activated, amari will patroll.
+					{
+						//if amari is in her patroll form this means she is hitting the next one in her patroll
+						amariDefense = lastAmariDefense;
+						//check for the next patrol point. she will likely back and forth, but in corners she will spread out.
+						float lastDist = Vector3.Distance(target.transform.position, greenList[0].transform.position);
+						int closest = 0;
+						for (int j = 1; j < greenList.Length; j++)//loop through and go to the next stage of the 
+						{
+							float thisDist = Vector3.Distance(this.transform.position, greenList[j].transform.position);
+							if (lastDist > thisDist && j != lastAmariDefense)
+							{
+								closest = j;
+							}
+						}
+						snuffleSnuffeHidingSpot = closest;
+						target.SetDestination(greenList[snuffleSnuffeHidingSpot].transform.position);
+					}
+				}
+			}
+		}
+
 		//-------------------------------------------------------------------------------
 		//The war bringer, Nio (Assassin)
 		//check what Nio sees.
@@ -253,12 +299,14 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWanderer()
 	{
+		Debug.Log("assassinWanderer");
 		if (nioDestination != lastNioDestination)
 		{
 			assassin.SetDestination(redList[nioDestination].transform.position);
 		}
-		else
+		else if (nioDestination == lastNioDestination)
 		{
+			Debug.Log("else if assassinwanderer");
 			AssassinWandererSet();
 		}
 
@@ -266,6 +314,7 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWandererSet()
 	{
+		Debug.Log("wandererset");
 		//get the list of all the red blocks
 		//check the distance of the blocks
 		//compare destination with the last visited destination
@@ -281,7 +330,6 @@ public class RaysAI : PlayerAI {
 			}
 		}
 		nioDestination = closest;
-		AssassinWanderer();
 	}
 
 	void SnuffleSnuffHide()
@@ -302,9 +350,8 @@ public class RaysAI : PlayerAI {
 		snuffleSnuffeHidingSpot = closest;
 	}
 
-
-
-	//NOT TRIGGERING
+	//NOT TRIGGERING, oh god I dont get why..
+	/*
 	private void OnTriggerEnter (Collider other)
 	{
 		Debug.Log("Collision detected! " + other.gameObject.name);
@@ -337,5 +384,6 @@ public class RaysAI : PlayerAI {
 				target.SetDestination(greenList[snuffleSnuffeHidingSpot].transform.position);
 			}
 		}
-	}
+		
+	}*/
 }
