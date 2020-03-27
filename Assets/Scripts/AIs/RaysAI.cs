@@ -319,17 +319,22 @@ public class RaysAI : PlayerAI {
 		//check the distance of the blocks
 		//compare destination with the last visited destination
 		//if it's not the same then we set the block as destination trigger Assassin wanderer.
-		float lastDist = Vector3.Distance(assassin.transform.position, redList[0].transform.position);
+		float lastDist = Vector3.Distance(assassin.transform.position, redList[lastNioDestination].transform.position);
 		int closest = 0;
 		for (int i = 1; i < redList.Length; i++)
 		{
-			float thisDist = Vector3.Distance(this.transform.position, redList[i].transform.position);
-			if (lastDist > thisDist && i != lastNioDestination)
+			float thisDist = Vector3.Distance(assassin.transform.position, redList[i].transform.position);
+			if (lastDist > thisDist)
 			{
-				closest = i;
+				if(i != lastNioDestination)
+				{
+					closest = i;
+				}
+				
 			}
 		}
 		nioDestination = closest;
+		Debug.Log("nioDestination is " + nioDestination);
 	}
 
 	void SnuffleSnuffHide()
