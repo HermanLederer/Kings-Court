@@ -22,6 +22,7 @@ public class RaysAI : PlayerAI {
 	private bool regroup = false;
 	private bool greenSafe = true;
 	private float greenTimer = 0f;
+	private float greenBlockDistance = 0f;
 	private float recordedDistanceGreen = 0f;
 	private float newDistanceGreen;
 	private float warbringerSplitTimer = 0.0f;
@@ -107,11 +108,11 @@ public class RaysAI : PlayerAI {
 
 
 		//Lady 'Get fucked' Amari (Defender)
-		//Circle SnuffleSnuff
-
+	
+		
 
 		//Amiri's Guarding stance
-		if ((guardingStance == true) && (amariStunGun == false))
+		if (guardingStance == true) 
 		{
 			//Amiri will patroll, in case amiri sees any attacker. she will run and stunn. --------------
 
@@ -141,6 +142,11 @@ public class RaysAI : PlayerAI {
 			//register the distance, and then check in the following 0.2secs if it's coming closer?
 
 		}
+		else
+		{
+			//follow SnuffleSnuff
+			stunner.SetDestination(target.transform.position);
+		}
 
 
 
@@ -155,16 +161,19 @@ public class RaysAI : PlayerAI {
 		{
 
 			//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
+			//check the nerest hiding spot.
+			//record the nearest hidingpot.
+
 			foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
 			{
-				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) > 5.0f)) 
+				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) > greenBlockDistance)) 
 				{
 					warbringerSplit = true;
 					snuffleSnuffSplit = true;
 				}
 			}
-			//if not, instead run to the second nearest.
-			//then wait untill the area is safe.
+			//if not, instead run away!
+			//then wait untill the area is safe. (which we do within amari's check, since snufflesnuff is useless.
 		}
 
 
@@ -176,6 +185,7 @@ public class RaysAI : PlayerAI {
 			//SnuffleSnuff will run and hide.
 			//target.SetDestination(... transform position);
 			//Trigger Amari's GuardingStance.
+			guardingStance = true;
 		}
 		else
 		{
