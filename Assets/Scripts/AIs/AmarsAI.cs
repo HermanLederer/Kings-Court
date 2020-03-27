@@ -10,6 +10,9 @@ public class AmarsAI : PlayerAI
 
 	private float nextRandomMoveTime;
 
+	private Vector3 follow;
+	
+
 	//--------------------------
 	// MonoBehaviour methods
 	//--------------------------
@@ -21,9 +24,8 @@ public class AmarsAI : PlayerAI
 
 	private void Update()
 	{
-		Vector3 targetWander = target.transform.right * Mathf.Sin(Time.time * 2.0f);
-		Vector3 assassinWander = assassin.transform.right * Mathf.Sin(Time.time * 1.5f);
-		Vector3 stunnerWander = stunner.transform.right * Mathf.Sin(Time.time * 6f);
+		// Vector3 targetWander = target.transform.right * Mathf.Sin(Time.time * 2.0f);
+		// Vector3 stunnerWander = stunner.transform.right * Mathf.Sin(Time.time * 6f);
 
 		if (nextRandomMoveTime <= Time.time)
 		{
@@ -40,6 +42,32 @@ public class AmarsAI : PlayerAI
 		// target
 		follow = target.transform.forward;
 		
+		targetRun();
+
+		// assassin
+		assassinChase();
+		
+
+		// Stunner
+		foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
+		{
+			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
+			{
+				if (Vector3.Distance(stunner.transform.position, assassin.transform.position) > 20f)
+					{
+						stunner.SetDestination(assassin.transform.position);
+					}
+			}
+		}
+		stunnerChase();
+	}
+
+	//--------------------------
+	// AmarsAI methods
+	//--------------------------
+	private void targetRun()
+	{
+		Vector3 targetWander = target.transform.right * Mathf.Sin(Time.time * 2.0f);
 		float distance = Vector3.Distance(transform.position, assassin.transform.position);
 		if (distance < enemyDistanceRun)
 		{
@@ -54,9 +82,10 @@ public class AmarsAI : PlayerAI
 		}
 		follow += targetWander;
 		target.SetDestination(target.transform.position + follow);
-		
+	}
 
-		// assassin
+	private void assassinChase()
+	{
 		foreach (AICore.AIBrainInterface visibleEntityInterface in assassin.GetVisibleAIEntities())
 		{
 			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target)
@@ -69,28 +98,16 @@ public class AmarsAI : PlayerAI
 				follow += (assassin.transform.position - target.transform.position).normalized;
 			}
 		}
-		
-
-		// Stunner
-		foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
-		{
-			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
-			{
-			if (Vector3.Distance(stunner.transform.position, assassin.transform.position) > 20f)
-			{
-			stunner.SetDestination(assassin.transform.position);
-			}
-			}
-		}
-
-		if (Vector3.Distance(stunner.transform.position, target.transform.position) > 10f)
+	}
+	
+	 private void stunnerChase()
+	 {
+		 Vector3 stunnerWander = stunner.transform.right * Mathf.Sin(Time.time * 6f);
+		 if (Vector3.Distance(stunner.transform.position, target.transform.position) > 10f)
 		{
 			stunner.SetDestination(target.transform.position);
 		}
-		else
-		{
 			follow = stunner.transform.forward;
 			follow += stunnerWander;
-		}
-	}
+	 }
 }
