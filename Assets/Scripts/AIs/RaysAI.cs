@@ -55,7 +55,7 @@ public class RaysAI : PlayerAI {
 			{
 				if (hitColliderNio[i].gameObject.transform.position == redList[nioDestination].transform.position)
 				{
-					nioDestination = lastNioDestination;
+					lastNioDestination = nioDestination;
 					AssassinWandererSet();
 				}
 			}
@@ -73,20 +73,20 @@ public class RaysAI : PlayerAI {
 					if (snuffleSnuffSplit == true) //in case snufflesnuffsplit is activated, amari will patroll.
 					{
 						//if amari is in her patroll form this means she is hitting the next one in her patroll
-						amariDefense = lastAmariDefense;
+						lastAmariDefense = amariDefense;
 						//check for the next patrol point. she will likely back and forth, but in corners she will spread out.
-						float lastDist = Vector3.Distance(target.transform.position, greenList[0].transform.position);
+						float lastDist = Vector3.Distance(target.transform.position, blueList[0].transform.position);
 						int closest = 0;
-						for (int j = 1; j < greenList.Length; j++)//loop through and go to the next stage of the 
+						for (int j = 1; j < blueList.Length; j++)//loop through and go to the next stage of the 
 						{
-							float thisDist = Vector3.Distance(this.transform.position, greenList[j].transform.position);
+							float thisDist = Vector3.Distance(target.transform.position, blueList[j].transform.position);
 							if (lastDist > thisDist && j != lastAmariDefense)
 							{
 								closest = j;
 							}
 						}
-						snuffleSnuffeHidingSpot = closest;
-						target.SetDestination(greenList[snuffleSnuffeHidingSpot].transform.position);
+						amariDefense = closest;
+						target.SetDestination(blueList[amariDefense].transform.position);
 					}
 				}
 			}
@@ -131,6 +131,7 @@ public class RaysAI : PlayerAI {
 		if (warbringerSplitTimer >= 1f)
 		{
 			warbringerSplit = false;
+			snuffleSnuffSplit = false;
 		}
 
 		//roaming if nothing else is going on~
@@ -187,7 +188,7 @@ public class RaysAI : PlayerAI {
 				}
 			}
 		}
-		else
+		else if (guardingStance == false)
 		{
 			//follow SnuffleSnuff
 			stunner.SetDestination(target.transform.position);
@@ -287,6 +288,7 @@ public class RaysAI : PlayerAI {
 		}
 
 
+
 		//-------------------------------------------------------------------------------
 
 
@@ -299,14 +301,12 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWanderer()
 	{
-		Debug.Log("assassinWanderer");
 		if (nioDestination != lastNioDestination)
 		{
 			assassin.SetDestination(redList[nioDestination].transform.position);
 		}
 		else if (nioDestination == lastNioDestination)
 		{
-			Debug.Log("else if assassinwanderer");
 			AssassinWandererSet();
 		}
 
@@ -314,7 +314,6 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWandererSet()
 	{
-		Debug.Log("wandererset");
 		//get the list of all the red blocks
 		//check the distance of the blocks
 		//compare destination with the last visited destination
@@ -334,7 +333,6 @@ public class RaysAI : PlayerAI {
 			}
 		}
 		nioDestination = closest;
-		Debug.Log("nioDestination is " + nioDestination);
 	}
 
 	void SnuffleSnuffHide()
@@ -346,7 +344,7 @@ public class RaysAI : PlayerAI {
 		int closest = 0;
 		for (int i = 1; i < greenList.Length; i++)//loop through and just find the nearest hiding spot.
 		{	
-			float thisDist = Vector3.Distance(this.transform.position, greenList[i].transform.position);
+			float thisDist = Vector3.Distance(target.transform.position, greenList[i].transform.position);
 			if (lastDist > thisDist)
 			{
 				closest = i;
