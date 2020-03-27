@@ -5,11 +5,10 @@ using UnityEngine;
 public class RaysAI : PlayerAI {
 	// Other components
 	private int redPointCounter = 0;
-	public List<GameObject> red;
-	public List<GameObject> blue;
-	public List<GameObject> green;
-	GameObject[] redList; //test for seeing if this is a thing.
-	
+
+	public GameObject[] redList; //test for seeing if this is a thing.
+	public GameObject[] blueList;
+	public GameObject[] greenList;
 
 	// Public variables
 
@@ -27,11 +26,11 @@ public class RaysAI : PlayerAI {
 	private float newDistanceGreen;
 	private float warbringerSplitTimer = 0.0f;
 
-	private Transform nioDestination;
-	private Transform lastNioDestination;
-	private Transform snuffleSnuffeHidingSpot;
-	private Transform amariDefense;
-	private Transform lastAmariDefense;
+	private int nioDestination;
+	private int lastNioDestination;
+	private int snuffleSnuffeHidingSpot;
+	private int amariDefense;
+	private int lastAmariDefense;
 
 	private int currentRedWP;
 	//--------------------------
@@ -244,13 +243,13 @@ public class RaysAI : PlayerAI {
 
 	void AssassinWanderer()
 	{
-		//if the destination is not the same as the last visited destination. 
-
-		int n = Random.Range(0, red.Count);
-		//nioDestination = red[n];
-		if ((nioDestination == lastNioDestination) && (regroup == false))
-	{
-			//walk to destination unless interupted.
+		if (nioDestination != lastNioDestination)
+		{
+			assassin.SetDestination(redList[nioDestination].transform.position);
+		}
+		else
+		{
+			AssassinWandererSet();
 		}
 
 	}
@@ -258,18 +257,29 @@ public class RaysAI : PlayerAI {
 	void AssassinWandererSet()
 	{
 		//get the list of all the red blocks
-		//pick one at random and set as destination
+		//check the distance of the blocks
 		//compare destination with the last visited destination
-		//is this the same? then we'll do it again.
-		//is it not? then we trigger Assassin wanderer.
+		//if it's not the same then we set the block as destination trigger Assassin wanderer.
+		float lastDist = Vector3.Distance(assassin.transform.position, redList[0].transform.position);
+		int closest = 0;
+		for (int i = 1; i < redList.Length; i++)
+		{
+			float thisDist = Vector3.Distance(this.transform.position, redList[i].transform.position);
+			if (lastDist > thisDist && i != lastNioDestination)
+			{
+				closest = i;
+			}
+		}
+		nioDestination = closest;
 		AssassinWanderer();
 	}
 
 	private void OnCollisionStay(Collision other)
 	{
-		if (other.transform.CompareTag("Red") && (other.gameObject.transform == nioDestination))
+		//if we reach our objective, set our current objective as our last objective and trigger the setting of a new one.
+		if (other.transform.CompareTag("Red") && (other.gameObject == redList[nioDestination]))
 		{
-			lastNioDestination = other.transform;
+			lastNioDestination = nioDestination;
 			AssassinWandererSet();
 		}
 	}
