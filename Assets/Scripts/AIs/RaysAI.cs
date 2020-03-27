@@ -171,15 +171,16 @@ public class RaysAI : PlayerAI {
 					SnuffleSnuffHide();
 
 					//give distance to greenBlock
-					Vector3.Distance(visibleEntityInterface.transform.position, greenList[snuffleSnuffeHidingSpot].transform.position) = greenBlockDistance;
+					greenBlockDistance = Vector3.Distance(visibleEntityInterface.transform.position, greenList[snuffleSnuffeHidingSpot].transform.position);
 				}
-				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) > greenBlockDistance)) 
+				//in case the enemy is closer to the hiding place than we are.
+				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(target.transform.position, greenList[snuffleSnuffeHidingSpot].transform.position) < greenBlockDistance)) 
 				{
 					warbringerSplit = true;
 					snuffleSnuffSplit = true;
 				}
 			}
-			//else run away!
+			//we wil run away!
 			//then wait untill the area is safe. (which we do within amari's check, since snufflesnuff is useless.
 		}
 
@@ -304,7 +305,7 @@ public class RaysAI : PlayerAI {
 
 
 	//NOT TRIGGERING
-	private void OnCollisionStay(Collision other)
+	private void OnTriggerEnter (Collider other)
 	{
 		Debug.Log("Collision detected! " + other.gameObject.name);
 		//if we reach our objective, set our current objective as our last objective and trigger the setting of a new one.
