@@ -189,6 +189,7 @@ public class RaysAI : PlayerAI {
 			}
 		}
 		else if (guardingStance == false)
+
 		{
 			//follow SnuffleSnuff
 			stunner.SetDestination(target.transform.position);
