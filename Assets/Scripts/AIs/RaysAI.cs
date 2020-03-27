@@ -22,7 +22,7 @@ public class RaysAI : PlayerAI {
 	private bool regroup = false;
 	private bool greenSafe = true;
 	private float greenTimer = 0f;
-	private float recordedDistanceGreen;
+	private float recordedDistanceGreen = 0f;
 	private float newDistanceGreen;
 	private float warbringerSplitTimer = 0.0f;
 
@@ -118,13 +118,27 @@ public class RaysAI : PlayerAI {
 			//Then trigger snuffleSnuffSplit will run the other way.
 			snuffleSnuffSplit = true;
 
+			if ((greenTimer % 0.2) == 0)
+			{
+				foreach (AICore.AIBrainInterface visibleEntityInterface in stunner.GetVisibleAIEntities())
+				{
+					if (((visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin && (Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) < recordedDistanceGreen))))
+					{
+						//if they are getting closer to snufflesnuff
+						warbringerSplit = true;
+						snuffleSnuffSplit = true;
+						stunner.SetDestination(visibleEntityInterface.transform.position);
+						recordedDistanceGreen = 0f;
+					}
+					else if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
+					{
+						//if they are not getting closer to snufflesnuff, record distance.
+						//	not working?		Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) = recordedDistanceGreen;
+					}
+				}
+			}
 			//check the distance between a registered attacker and snuffle snuff
 			//register the distance, and then check in the following 0.2secs if it's coming closer?
-			if (false)
-			{
-				//If an attacker is approaching SnuffleSnuff, trigger AmariStungun to stun it. 
-				amariStunGun = true;
-			}
 
 		}
 
@@ -141,7 +155,14 @@ public class RaysAI : PlayerAI {
 		{
 
 			//then check the nearest hiding spot and see if the the attackker is closer or snufflesnuff is. if so Run to the nearest hidingspot!
-			
+			foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
+			{
+				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) > 5.0f)) 
+				{
+					warbringerSplit = true;
+					snuffleSnuffSplit = true;
+				}
+			}
 			//if not, instead run to the second nearest.
 			//then wait untill the area is safe.
 		}
@@ -152,19 +173,19 @@ public class RaysAI : PlayerAI {
 		//Warbringer split
 		if (warbringerSplit == true)
 		{
-			//SnuffleSnuff will run and hide behind a nearby corner.
+			//SnuffleSnuff will run and hide.
 			//target.SetDestination(... transform position);
 			//Trigger Amari's GuardingStance.
 		}
 		else
 		{
-			//roam normally.
+			target.SetDestination(assassin.transform.position); //wander after the assassin
 		}
 
 
 
-		//AmariStungun
-		if (amariStunGun == true)
+		//possible snuffsnuff sight
+		if (guardingStance == true)
 		{
 			greenTimer = +1f * Time.deltaTime;
 			//Overrule guardingStance, (this is done via the guardingstance if statement.)
@@ -174,10 +195,18 @@ public class RaysAI : PlayerAI {
 			{
 				foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
 				{
-					if (((visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)/*&&(Vector3.Distance((this.target.transform.position, visibleEntityInterface.transform.position) > 5.0f)) */ ))					
+					if (((visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin && (Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) < recordedDistanceGreen))))
 					{
+						//if they are getting closer to snufflesnuff
 						warbringerSplit = true;
 						snuffleSnuffSplit = true;
+						stunner.SetDestination(visibleEntityInterface.transform.position);
+						recordedDistanceGreen = 0f;
+					}
+					else if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin)
+					{
+						//if they are not getting closer to snufflesnuff, record distance.
+						//	not working?		Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) = recordedDistanceGreen;
 					}
 				}
 			}
