@@ -61,8 +61,11 @@ public class RaysAI : PlayerAI {
 			}
 			if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target)
 			{
+				//chase the enemy.
 				assassin.SetDestination(visibleEntityInterface.transform.position);
 				WarBringer = true;
+				//make sure that we keep chasing the enemy.
+				warbringerSplitTimer = 0f;
 			}
 			else if ((visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.target) && (WarBringer == false))
 			{
@@ -78,7 +81,7 @@ public class RaysAI : PlayerAI {
 		{
 			warbringerSplitTimer += Time.deltaTime;
 		}
-		//check every second if we still see anyone.
+		//check every second if we still see anyone. we do that in the assasin brain ^
 		if (warbringerSplitTimer >= 1f)
 		{
 			warbringerSplit = false;
@@ -137,9 +140,6 @@ public class RaysAI : PlayerAI {
 					}
 				}
 			}
-			//check the distance between a registered attacker and snuffle snuff
-			//register the distance, and then check in the following 0.2secs if it's coming closer?
-
 		}
 		else
 		{
@@ -165,13 +165,21 @@ public class RaysAI : PlayerAI {
 
 			foreach (AICore.AIBrainInterface visibleEntityInterface in target.GetVisibleAIEntities())
 			{
+				//if it's an assassin
+				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin) 
+				{
+					SnuffleSnuffHide();
+
+					//give distance to greenBlock
+					Vector3.Distance(visibleEntityInterface.transform.position, greenList[snuffleSnuffeHidingSpot].transform.position) = greenBlockDistance;
+				}
 				if (visibleEntityInterface.team != target.team && visibleEntityInterface.type == AICore.AIType.assassin &&(Vector3.Distance(this.target.transform.position, visibleEntityInterface.transform.position) > greenBlockDistance)) 
 				{
 					warbringerSplit = true;
 					snuffleSnuffSplit = true;
 				}
 			}
-			//if not, instead run away!
+			//else run away!
 			//then wait untill the area is safe. (which we do within amari's check, since snufflesnuff is useless.
 		}
 
@@ -182,7 +190,8 @@ public class RaysAI : PlayerAI {
 		if (warbringerSplit == true)
 		{
 			//SnuffleSnuff will run and hide.
-			//target.SetDestination(... transform position);
+			SnuffleSnuffHide();
+			target.SetDestination(greenList[snuffleSnuffeHidingSpot].transform.position);
 			//Trigger Amari's GuardingStance.
 			guardingStance = true;
 		}
@@ -274,13 +283,58 @@ public class RaysAI : PlayerAI {
 		AssassinWanderer();
 	}
 
+	void SnuffleSnuffHide()
+	{
+		//if time allows, add that check for making sure that the spot is further away from enemy target than it is from snufflesnuff.
+		//This is likely already the case, but in yeah.
+
+		float lastDist = Vector3.Distance(target.transform.position, greenList[0].transform.position);
+		int closest = 0;
+		for (int i = 1; i < greenList.Length; i++)//loop through and just find the nearest hiding spot.
+		{	
+			float thisDist = Vector3.Distance(this.transform.position, greenList[i].transform.position);
+			if (lastDist > thisDist)
+			{
+				closest = i;
+			}
+		}
+		snuffleSnuffeHidingSpot = closest;
+	}
+
+
+
+	//NOT TRIGGERING
 	private void OnCollisionStay(Collision other)
 	{
+		Debug.Log("Collision detected! " + other.gameObject.name);
 		//if we reach our objective, set our current objective as our last objective and trigger the setting of a new one.
-		if (other.transform.CompareTag("Red") && (other.gameObject == redList[nioDestination]))
+		if (other.transform.CompareTag("Red") && (other.gameObject.transform.position == redList[nioDestination].transform.position))
 		{
-			lastNioDestination = nioDestination;
+			nioDestination = lastNioDestination;
 			AssassinWandererSet();
+		}
+		if (other.transform.CompareTag("Blue") && (other.gameObject.transform.position == blueList[amariDefense].transform.position))
+		{
+
+
+			if(snuffleSnuffSplit == true) //in case snufflesnuffsplit is activated, amari will patroll.
+			{
+				//if amari is in her patroll form this means she is hitting the next one in her patroll
+				amariDefense = lastAmariDefense;
+				//check for the next patrol point. she will likely back and forth, but in corners she will spread out.
+				float lastDist = Vector3.Distance(target.transform.position, greenList[0].transform.position);
+				int closest = 0;
+				for (int i = 1; i < greenList.Length; i++)//loop through and go to the next stage of the 
+				{
+					float thisDist = Vector3.Distance(this.transform.position, greenList[i].transform.position);
+					if (lastDist > thisDist && i != lastAmariDefense)
+					{
+						closest = i;
+					}
+				}
+				snuffleSnuffeHidingSpot = closest;
+				target.SetDestination(greenList[snuffleSnuffeHidingSpot].transform.position);
+			}
 		}
 	}
 }
