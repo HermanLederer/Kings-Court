@@ -117,7 +117,7 @@ public class RaysAI : PlayerAI {
 			{
 				assassin.SetDestination(visibleEntityInterface.transform.position);
 			}
-			else
+			else // potential problem
 			{
 				WarBringer = false;
 			}
